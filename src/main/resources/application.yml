@@ -1,0 +1,11 @@
+spring:
+  application:
+    name: IoT App
+
+integration:
+  mqtt:
+    url: tcp://mac-primergy:1883
+    client-id: iot-app
+    topics:
+      - soil-moisture-sensor
+      - temperature-sensor
