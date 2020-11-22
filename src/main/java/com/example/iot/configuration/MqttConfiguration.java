@@ -31,7 +31,7 @@ import static java.util.Optional.ofNullable;
 @FieldDefaults(makeFinal = true, level = AccessLevel.PRIVATE)
 @Slf4j
 public class MqttConfiguration {
-    static String RECEIVED_TOPIC = "mqtt_receivedTopic";
+    static String receivedTopic = "mqtt_receivedTopic";
     ApplicationEventPublisher publisher;
     MqttClient mqttClient;
 
@@ -57,7 +57,7 @@ public class MqttConfiguration {
         return message -> {
             MessageHeaders headers = message.getHeaders();
 
-            publisher.publishEvent(new GenericEvent(getHeaderValue(headers, RECEIVED_TOPIC)));
+            publisher.publishEvent(new GenericEvent(getHeaderValue(headers, receivedTopic), message.getPayload().toString()));
             logEvent(headers);
         };
     }

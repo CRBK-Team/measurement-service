@@ -1,11 +1,9 @@
 package com.example.iot.domain;
 
-import lombok.*;
-import lombok.experimental.FieldDefaults;
+import lombok.Value;
 
-@AllArgsConstructor
-@FieldDefaults(level = AccessLevel.PUBLIC)
-@Getter
+@Value
 public class GenericEvent {
     String type;
+    String object;
 }
