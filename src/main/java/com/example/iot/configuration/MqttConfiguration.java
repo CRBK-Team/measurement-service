@@ -1,6 +1,7 @@
 package com.example.iot.configuration;
 
-import com.example.iot.domain.GenericEvent;
+import com.example.iot.infrastructure.EventHandler;
+import com.fasterxml.jackson.core.JsonProcessingException;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.experimental.FieldDefaults;
@@ -16,14 +17,6 @@ import org.springframework.integration.mqtt.inbound.MqttPahoMessageDrivenChannel
 import org.springframework.integration.mqtt.support.DefaultPahoMessageConverter;
 import org.springframework.messaging.MessageChannel;
 import org.springframework.messaging.MessageHandler;
-import org.springframework.messaging.MessageHeaders;
-
-import java.time.Instant;
-import java.time.LocalDateTime;
-import java.time.ZoneId;
-import java.time.format.DateTimeFormatter;
-
-import static java.util.Optional.ofNullable;
 
 @Configuration
 @IntegrationComponentScan
@@ -31,9 +24,9 @@ import static java.util.Optional.ofNullable;
 @FieldDefaults(makeFinal = true, level = AccessLevel.PRIVATE)
 @Slf4j
 public class MqttConfiguration {
-    static String receivedTopic = "mqtt_receivedTopic";
-    ApplicationEventPublisher publisher;
     MqttClient mqttClient;
+    ApplicationEventPublisher publisher;
+    EventHandler eventHandler;
 
     @Bean
     public MessageChannel mqttInputChannel() {
@@ -55,30 +48,13 @@ public class MqttConfiguration {
     @ServiceActivator(inputChannel = "mqttInputChannel")
     public MessageHandler handler() {
         return message -> {
-            MessageHeaders headers = message.getHeaders();
-
-            publisher.publishEvent(new GenericEvent(getHeaderValue(headers, receivedTopic), message.getPayload().toString()));
-            logEvent(headers);
+            try {
+                Object event = eventHandler.castEvent(message);
+                publisher.publishEvent(event);
+                eventHandler.logEvent(message.getHeaders());
+            } catch (JsonProcessingException e) {
+                e.printStackTrace();
+            }
         };
-    }
-
-    private void logEvent(MessageHeaders headers) {
-        log.info("{} received message: { id: {}, topic: {} }", getTime(headers),
-                getHeaderValue(headers, "id"), getHeaderValue(headers, "mqtt_receivedTopic"));
-    }
-
-    private String getHeaderValue(MessageHeaders headers, String headerKey) {
-        return ofNullable(headers.get(headerKey))
-                .map(Object::toString)
-                .orElseThrow(RuntimeException::new);
-    }
-
-    private String getTime(MessageHeaders headers) {
-        long epoch = ofNullable(headers.get("timestamp"))
-                .map(timestamp -> Long.parseLong(timestamp.toString()))
-                .orElseThrow(RuntimeException::new);
-
-        return LocalDateTime.ofInstant(Instant.ofEpochMilli(epoch), ZoneId.systemDefault())
-                .format(DateTimeFormatter.ofPattern("HH:mm:ss"));
     }
 }
