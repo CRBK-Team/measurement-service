@@ -49,8 +49,7 @@ public class MqttConfiguration {
     public MessageHandler handler() {
         return message -> {
             try {
-                Object event = eventHandler.castEvent(message);
-                publisher.publishEvent(event);
+                eventHandler.process(message);
                 eventHandler.logEvent(message.getHeaders());
             } catch (JsonProcessingException e) {
                 e.printStackTrace();
