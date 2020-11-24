@@ -5,17 +5,16 @@ import com.example.iot.domain.TemperatureMeasuredEvent;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.context.event.EventListener;
 import org.springframework.messaging.Message;
 import org.springframework.messaging.MessageHeaders;
 import org.springframework.stereotype.Component;
+import org.springframework.util.MethodInvoker;
 
 import java.time.Instant;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.time.format.DateTimeFormatter;
 
-import static com.example.iot.domain.Event.EVENT_CLASSES;
 import static com.example.iot.domain.Event.EventType;
 import static java.util.Optional.ofNullable;
 
@@ -24,28 +23,36 @@ import static java.util.Optional.ofNullable;
 public class EventHandler {
     private static final String TOPIC = "mqtt_receivedTopic";
 
-    @EventListener(SoilMoistureMeasuredEvent.class)
-    public void handleSoilMoistureMeasure(SoilMoistureMeasuredEvent event) {
+
+    public void handleMessage(SoilMoistureMeasuredEvent event) {
         log.info("Handled Soil Moisture measure: {}", event.toString());
     }
 
-    @EventListener(TemperatureMeasuredEvent.class)
-    public void handleOtherMeasure(TemperatureMeasuredEvent event) {
+
+    public void handleMessage(TemperatureMeasuredEvent event) {
         //TODO: Temperature Sensor event class
         log.info("Handled Temperature measure");
     }
 
-    public <T> T castEvent(Message<?> message) throws JsonProcessingException {
-        String topic = ofNullable(message.getHeaders().get(TOPIC))
-                .map(Object::toString)
-                .orElseThrow(RuntimeException::new);
 
-        Class<?> clazz = EVENT_CLASSES.get(EventType.of(topic));
+    private void invokeListenerMethod(Object event) {
+        try {
+            MethodInvoker methodInvoker = new MethodInvoker();
+            methodInvoker.setTargetObject(this);
+            methodInvoker.setTargetMethod("handleMessage");
+            methodInvoker.setArguments(event);
+            methodInvoker.prepare();
+            methodInvoker.invoke();
+        } catch (Exception e) {
+            log.error("exception during invoke DocumentMessageListener method, invalid type of message or changed method name", e);
+        }
+    }
 
-        @SuppressWarnings("unchecked")
-        T event = (T) clazz.cast(new ObjectMapper().readValue(message.getPayload().toString(), clazz));
+    public void process(Message<?> message) throws JsonProcessingException {
+           Class<?> clazz = EventType.of(TOPIC).getClazz();
+        Object o = new ObjectMapper().readValue(message.getPayload().toString(), clazz);
 
-        return event;
+        invokeListenerMethod(o);
     }
 
     public void logEvent(MessageHeaders headers) {
