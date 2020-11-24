@@ -1,7 +1,8 @@
 package com.example.iot.configuration;
 
-import com.example.iot.infrastructure.EventHandler;
+import com.example.iot.domain.EventType;
 import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.experimental.FieldDefaults;
@@ -15,8 +16,11 @@ import org.springframework.integration.channel.DirectChannel;
 import org.springframework.integration.core.MessageProducer;
 import org.springframework.integration.mqtt.inbound.MqttPahoMessageDrivenChannelAdapter;
 import org.springframework.integration.mqtt.support.DefaultPahoMessageConverter;
+import org.springframework.messaging.Message;
 import org.springframework.messaging.MessageChannel;
 import org.springframework.messaging.MessageHandler;
+
+import static java.util.Optional.ofNullable;
 
 @Configuration
 @IntegrationComponentScan
@@ -26,7 +30,6 @@ import org.springframework.messaging.MessageHandler;
 public class MqttConfiguration {
     MqttClient mqttClient;
     ApplicationEventPublisher publisher;
-    EventHandler eventHandler;
 
     @Bean
     public MessageChannel mqttInputChannel() {
@@ -49,12 +52,24 @@ public class MqttConfiguration {
     public MessageHandler handler() {
         return message -> {
             try {
-                Object event = eventHandler.castEvent(message);
+                Object event = castEvent(message);
                 publisher.publishEvent(event);
-                eventHandler.logEvent(message.getHeaders());
             } catch (JsonProcessingException e) {
                 e.printStackTrace();
             }
         };
+    }
+
+    public <T> T castEvent(Message<?> message) throws JsonProcessingException {
+        String topic = ofNullable(message.getHeaders().get("mqtt_receivedTopic"))
+                .map(Object::toString)
+                .orElseThrow(RuntimeException::new);
+
+        Class<?> clazz = EventType.of(topic).getClazz();
+
+        @SuppressWarnings("unchecked")
+        T event = (T) clazz.cast(new ObjectMapper().readValue(message.getPayload().toString(), clazz));
+
+        return event;
     }
 }
