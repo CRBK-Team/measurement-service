@@ -1,4 +1,4 @@
-package com.example.iot.domain;
+package com.example.iot.domain.event;
 
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
@@ -10,8 +10,8 @@ import lombok.experimental.FieldDefaults;
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
 @FieldDefaults(level = AccessLevel.PRIVATE)
 @Getter
-public class TemperatureMeasuredEvent {
-    String sensorName;
-    int rawValue;
-    Long timestamp;
+public class SoilMoistureMeasuredEvent extends Event {
+    String sensor;
+    int raw;
+    int pct;
 }

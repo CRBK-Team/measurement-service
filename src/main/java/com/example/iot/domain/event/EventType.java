@@ -1,4 +1,4 @@
-package com.example.iot.domain;
+package com.example.iot.domain.event;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;

@@ -2,6 +2,7 @@ plugins {
     id 'org.springframework.boot' version '2.4.0'
     id 'io.spring.dependency-management' version '1.0.10.RELEASE'
     id 'java'
+    id 'com.github.eirnym.js2p' version '1.0'
 }
 
 group = 'com.example'
@@ -22,6 +23,7 @@ dependencies {
     implementation(
             'org.springframework.boot:spring-boot-starter-web',
             'org.springframework.boot:spring-boot-starter-validation',
+            'org.springframework.boot:spring-boot-starter-data-elasticsearch',
             'org.springframework.integration:spring-integration-mqtt'
     )
     compileOnly 'org.projectlombok:lombok'
@@ -34,4 +36,19 @@ dependencies {
 
 test {
     useJUnitPlatform()
+}
+
+jsonSchema2Pojo {
+    targetPackage = 'com.example'
+    source = files('src/main/resources/json')
+    includeConstructors = true
+    includeGetters = false
+    includeSetters = false
+    includeJsr303Annotations = true
+    initializeCollections = false
+    removeOldOutput = true
+    inclusionLevel = 'NON_EMPTY'
+    dateTimeType = "java.time.LocalDateTime"
+    dateType = "java.time.LocalDate"
+    timeType = "java.time.LocalTime"
 }

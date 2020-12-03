@@ -1,6 +1,7 @@
 package com.example.iot.configuration;
 
-import com.example.iot.domain.EventType;
+import com.example.iot.domain.event.Event;
+import com.example.iot.domain.event.EventType;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.AccessLevel;
@@ -60,6 +61,7 @@ public class MqttConfiguration {
         };
     }
 
+    @SuppressWarnings("unchecked")
     public <T> T castEvent(Message<?> message) throws JsonProcessingException {
         String topic = ofNullable(message.getHeaders().get("mqtt_receivedTopic"))
                 .map(Object::toString)
@@ -67,9 +69,8 @@ public class MqttConfiguration {
 
         Class<?> clazz = EventType.of(topic).getClazz();
 
-        @SuppressWarnings("unchecked")
-        T event = (T) clazz.cast(new ObjectMapper().readValue(message.getPayload().toString(), clazz));
-
-        return event;
+        Event event = (Event) clazz.cast(new ObjectMapper().readValue(message.getPayload().toString(), clazz));
+        event.assignHeaders(message.getHeaders().getId(), message.getHeaders().getTimestamp());
+        return (T) event;
     }
 }
