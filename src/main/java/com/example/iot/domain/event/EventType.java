@@ -8,8 +8,8 @@ import java.util.stream.Stream;
 @AllArgsConstructor
 @Getter
 public enum EventType {
-    SOIL_MOISTURE_SENSOR("soil-moisture-sensor", SoilMoistureMeasuredEvent.class),
-    TEMPERATURE_SENSOR("temperature-sensor", TemperatureMeasuredEvent.class);
+    SOIL_MOISTURE_SENSOR("soil-moisture-sensor", SoilMoistureEvent.class),
+    TEMPERATURE_SENSOR("temperature-sensor", TemperatureEvent.class);
 
     String name;
     Class<?> clazz;

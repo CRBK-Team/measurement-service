@@ -9,3 +9,7 @@ integration:
     topics:
       - soil-moisture-sensor
       - temperature-sensor
+
+logging:
+  level:
+    org.springframework.data.convert.CustomConversions: ERROR

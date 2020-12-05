@@ -1,10 +1,9 @@
 package com.example.iot.domain.service;
 
 import com.example.SoilMoistureView;
-import com.example.iot.domain.event.SoilMoistureMeasuredEvent;
+import com.example.iot.domain.event.SoilMoistureEvent;
 import com.example.iot.domain.model.SoilMoisture;
 import com.example.iot.domain.repository.SoilMoistureRepository;
-import lombok.AccessLevel;
 import lombok.experimental.FieldDefaults;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.core.convert.ConversionService;
@@ -17,9 +16,10 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 import static java.util.Objects.requireNonNull;
+import static lombok.AccessLevel.PRIVATE;
 
 @Service
-@FieldDefaults(makeFinal = true, level = AccessLevel.PRIVATE)
+@FieldDefaults(makeFinal = true, level = PRIVATE)
 public class MeasureService {
     SoilMoistureRepository soilMoistureRepository;
     ConversionService conversionService;
@@ -39,7 +39,7 @@ public class MeasureService {
         return new PageImpl<>(soilMoistureViews, page.getPageable(), page.getTotalElements());
     }
 
-    public void addSoilMoisture(SoilMoistureMeasuredEvent event) {
+    public void addSoilMoisture(SoilMoistureEvent event) {
         SoilMoisture soilMoisture = requireNonNull(conversionService.convert(event, SoilMoisture.class));
         soilMoistureRepository.save(soilMoisture);
     }

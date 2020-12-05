@@ -4,7 +4,6 @@ import com.example.iot.domain.event.Event;
 import com.example.iot.domain.event.EventType;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.experimental.FieldDefaults;
 import lombok.extern.slf4j.Slf4j;
@@ -22,11 +21,12 @@ import org.springframework.messaging.MessageChannel;
 import org.springframework.messaging.MessageHandler;
 
 import static java.util.Optional.ofNullable;
+import static lombok.AccessLevel.PRIVATE;
 
 @Configuration
 @IntegrationComponentScan
 @AllArgsConstructor
-@FieldDefaults(makeFinal = true, level = AccessLevel.PRIVATE)
+@FieldDefaults(makeFinal = true, level = PRIVATE)
 @Slf4j
 public class MqttConfiguration {
     MqttClient mqttClient;
@@ -62,7 +62,7 @@ public class MqttConfiguration {
     }
 
     @SuppressWarnings("unchecked")
-    public <T> T castEvent(Message<?> message) throws JsonProcessingException {
+    public static <T> T castEvent(Message<?> message) throws JsonProcessingException {
         String topic = ofNullable(message.getHeaders().get("mqtt_receivedTopic"))
                 .map(Object::toString)
                 .orElseThrow(RuntimeException::new);

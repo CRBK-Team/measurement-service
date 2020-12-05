@@ -1,14 +1,18 @@
 package com.example.iot;
 
-import org.assertj.core.api.Assertions;
-import org.junit.jupiter.api.Test;
+import com.example.iot.infrastructure.EventHandler;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.core.convert.ConversionService;
 
 @SpringBootTest
 class BaseTest {
 
-    @Test
-    void contextLoads() {
-        Assertions.assertThat(Boolean.TRUE).isTrue();
-    }
+    @Autowired
+    EventHandler eventHandler;
+
+    @Autowired
+    @Qualifier("mvcConversionService")
+    ConversionService conversionService;
 }
