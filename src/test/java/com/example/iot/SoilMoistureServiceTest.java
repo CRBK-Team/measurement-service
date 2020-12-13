@@ -17,6 +17,7 @@ import java.util.UUID;
 import static java.util.Objects.requireNonNull;
 import static org.assertj.core.api.Assertions.assertThat;
 
+@DisplayName("Soil moisture tests")
 class SoilMoistureServiceTest extends BaseTest {
 
     @Test
@@ -30,8 +31,8 @@ class SoilMoistureServiceTest extends BaseTest {
         SoilMoisture soilMoisture = requireNonNull(conversionService.convert(event, SoilMoisture.class));
 
         // then
-        assertThat(soilMoisture.getTimestamp())
-                .isEqualTo(LocalDateTime.of(2020, 1, 1, 3, 0, 0));
+        assertThat(soilMoisture.getPercent()).isEqualTo(0.52);
+        assertThat(soilMoisture.getTimestamp()).isEqualTo(LocalDateTime.of(2020, 1, 1, 3, 0, 0));
     }
 
     private Message<?> prepareMessage() {
@@ -45,6 +46,6 @@ class SoilMoistureServiceTest extends BaseTest {
                 "mqtt_receivedQos", 0,
                 "timestamp", 1577844000L));
 
-        return new GenericMessage(payload, headers);
+        return new GenericMessage<>(payload, headers);
     }
 }

@@ -1,6 +1,5 @@
 package com.example.iot.domain.model;
 
-import lombok.Value;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.annotation.TypeAlias;
 import org.springframework.data.elasticsearch.annotations.Document;
@@ -14,14 +13,41 @@ import static org.springframework.data.elasticsearch.annotations.FieldType.Date;
 
 @Document(indexName = "soil-moisture")
 @TypeAlias("SoilMoisture")
-@Value
 public class SoilMoisture {
 
     @Id
-    UUID id;
-    String sensor;
-    int raw;
-    double percent;
+    private final UUID id;
+    private final String sensor;
+    private final int raw;
+    private final double percent;
     @Field(type = Date, format = date_hour_minute_second)
-    LocalDateTime timestamp;
+    private final LocalDateTime timestamp;
+
+    public SoilMoisture(UUID id, String sensor, int raw, double percent, LocalDateTime timestamp) {
+        this.id = id;
+        this.sensor = sensor;
+        this.raw = raw;
+        this.percent = percent;
+        this.timestamp = timestamp;
+    }
+
+    public UUID getId() {
+        return id;
+    }
+
+    public String getSensor() {
+        return sensor;
+    }
+
+    public int getRaw() {
+        return raw;
+    }
+
+    public double getPercent() {
+        return percent;
+    }
+
+    public LocalDateTime getTimestamp() {
+        return timestamp;
+    }
 }

@@ -9,6 +9,8 @@ integration:
     topics:
       - soil-moisture-sensor
       - temperature-sensor
+  elasticsearch:
+    endpoint: mac-primergy:9200
 
 logging:
   level:

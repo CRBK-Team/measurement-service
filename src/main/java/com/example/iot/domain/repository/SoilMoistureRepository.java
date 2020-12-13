@@ -8,5 +8,4 @@ import java.util.UUID;
 
 @Repository
 public interface SoilMoistureRepository extends ElasticsearchRepository<SoilMoisture, UUID> {
-
 }

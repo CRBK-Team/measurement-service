@@ -1,17 +1,22 @@
 package com.example.iot.domain.event;
 
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.experimental.FieldDefaults;
-
-import static lombok.AccessLevel.PRIVATE;
-
-@AllArgsConstructor
-@NoArgsConstructor(access = PRIVATE)
-@FieldDefaults(level = PRIVATE)
-@Getter
 public class TemperatureEvent {
-    String sensor;
-    int raw;
+    private String sensor;
+    private int raw;
+
+    private TemperatureEvent() {
+    }
+
+    public TemperatureEvent(String sensor, int raw) {
+        this.sensor = sensor;
+        this.raw = raw;
+    }
+
+    public String getSensor() {
+        return sensor;
+    }
+
+    public int getRaw() {
+        return raw;
+    }
 }

@@ -1,18 +1,28 @@
 package com.example.iot.domain.event;
 
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.experimental.FieldDefaults;
-
-import static lombok.AccessLevel.PRIVATE;
-
-@AllArgsConstructor
-@NoArgsConstructor(access = PRIVATE)
-@FieldDefaults(level = PRIVATE)
-@Getter
 public class SoilMoistureEvent extends Event {
-    String sensor;
-    int raw;
-    int pct;
+    private String sensor;
+    private int raw;
+    private int pct;
+
+    private SoilMoistureEvent() {
+    }
+
+    public SoilMoistureEvent(String sensor, int raw, int pct) {
+        this.sensor = sensor;
+        this.raw = raw;
+        this.pct = pct;
+    }
+
+    public String getSensor() {
+        return sensor;
+    }
+
+    public int getRaw() {
+        return raw;
+    }
+
+    public int getPct() {
+        return pct;
+    }
 }

@@ -4,9 +4,6 @@ import com.example.iot.domain.event.Event;
 import com.example.iot.domain.event.EventType;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import lombok.AllArgsConstructor;
-import lombok.experimental.FieldDefaults;
-import lombok.extern.slf4j.Slf4j;
 import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -21,16 +18,17 @@ import org.springframework.messaging.MessageChannel;
 import org.springframework.messaging.MessageHandler;
 
 import static java.util.Optional.ofNullable;
-import static lombok.AccessLevel.PRIVATE;
 
 @Configuration
 @IntegrationComponentScan
-@AllArgsConstructor
-@FieldDefaults(makeFinal = true, level = PRIVATE)
-@Slf4j
 public class MqttConfiguration {
-    MqttClient mqttClient;
-    ApplicationEventPublisher publisher;
+    private final MqttClient mqttClient;
+    private final ApplicationEventPublisher publisher;
+
+    public MqttConfiguration(MqttClient mqttClient, ApplicationEventPublisher publisher) {
+        this.mqttClient = mqttClient;
+        this.publisher = publisher;
+    }
 
     @Bean
     public MessageChannel mqttInputChannel() {

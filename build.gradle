@@ -1,5 +1,5 @@
 plugins {
-    id 'org.springframework.boot' version '2.4.0'
+    id 'org.springframework.boot' version '2.4.1'
     id 'io.spring.dependency-management' version '1.0.10.RELEASE'
     id 'java'
     id 'com.github.eirnym.js2p' version '1.0'
@@ -26,11 +26,7 @@ dependencies {
             'org.springframework.boot:spring-boot-starter-data-elasticsearch',
             'org.springframework.integration:spring-integration-mqtt'
     )
-    compileOnly 'org.projectlombok:lombok'
-    annotationProcessor(
-            'org.springframework.boot:spring-boot-configuration-processor',
-            'org.projectlombok:lombok'
-    )
+    annotationProcessor 'org.springframework.boot:spring-boot-configuration-processor'
     testImplementation 'org.springframework.boot:spring-boot-starter-test'
 }
 
