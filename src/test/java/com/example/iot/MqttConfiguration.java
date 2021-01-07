@@ -1,5 +1,6 @@
-package com.example.iot.configuration;
+package com.example.iot;
 
+import com.example.iot.configuration.MqttClient;
 import com.example.iot.domain.event.Event;
 import com.example.iot.domain.event.EventType;
 import com.fasterxml.jackson.core.JsonProcessingException;
@@ -7,7 +8,6 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.context.annotation.Profile;
 import org.springframework.integration.annotation.IntegrationComponentScan;
 import org.springframework.integration.annotation.ServiceActivator;
 import org.springframework.integration.channel.DirectChannel;
@@ -22,7 +22,6 @@ import static java.util.Optional.ofNullable;
 
 @Configuration
 @IntegrationComponentScan
-@Profile("!test")
 public class MqttConfiguration {
     private final MqttClient mqttClient;
     private final ApplicationEventPublisher publisher;

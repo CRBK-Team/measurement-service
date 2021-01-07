@@ -1,10 +1,11 @@
 spring:
   application:
-    name: IoT App
+    name: iot-service
 
 integration:
   mqtt:
-    url: tcp://mac-primergy:1883
+    hostname: mac-primergy:1883
+    url: tcp://${integration.mqtt.hostname}
     client-id: iot-app
     topics:
       - soil-moisture-sensor
@@ -15,3 +16,5 @@ integration:
 logging:
   level:
     org.springframework.data.convert.CustomConversions: ERROR
+
+spring.influx

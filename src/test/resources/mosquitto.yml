@@ -1,0 +1,23 @@
+version: '3.3'
+services:
+
+  mosquitto:
+    image: eclipse-mosquitto
+    ports:
+      - 1883:1883
+      - 9001:9001
+    networks:
+      - internal
+    volumes:
+      - mosquitto-conf:/home/mac/Infrastructure/mosquitto/config
+      - mosquitto-data:/home/mac/Infrastructure/mosquitto/data
+      - mosquitto-logs:/home/mac/Infrastructure/mosquitto/log
+
+networks:
+  internal:
+    driver: overlay
+
+volumes:
+  mosquitto-conf:
+  mosquitto-data:
+  mosquitto-logs:
