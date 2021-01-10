@@ -2,11 +2,8 @@ package com.example.iot;
 
 import com.example.iot.configuration.MqttConfiguration;
 import com.example.iot.domain.event.SoilMoistureEvent;
-import com.example.iot.domain.model.SoilMoisture;
+import com.example.iot.domain.model.SoilMoistureRawInflux;
 import com.fasterxml.jackson.core.JsonProcessingException;
-import org.apache.http.HttpHost;
-import org.apache.http.impl.client.BasicCredentialsProvider;
-import org.elasticsearch.client.RestClient;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.integration.support.MutableMessageHeaders;
@@ -31,17 +28,12 @@ class SoilMoistureServiceTest extends BaseTest {
         SoilMoistureEvent event = MqttConfiguration.castEvent(message);
 
         // when
-        SoilMoisture soilMoisture = requireNonNull(conversionService.convert(event, SoilMoisture.class));
+        SoilMoistureRawInflux soilMoisture = requireNonNull(conversionService.convert(event, SoilMoistureRawInflux.class));
 
         // then
         assertThat(soilMoisture.getPercent()).isEqualTo(0.52);
         assertThat(soilMoisture.getTimestamp()).isEqualTo(LocalDateTime.of(2020, 1, 1, 3, 0, 0));
     }
-//
-//    @Test
-//    void test() {
-//        assertThat(TestContainerConfiguration.ELASTICSEARCH_CONTAINER.isRunning()).isTrue();
-//    }
 
     private Message<?> prepareMessage() {
         String payload = "{\"sensor\":\"hw-080\",\"raw\":\"676\",\"pct\":\"52\"}";

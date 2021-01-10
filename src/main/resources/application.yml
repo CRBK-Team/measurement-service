@@ -3,18 +3,17 @@ spring:
     name: iot-service
 
 integration:
+  influx:
+    url: http://mac-primergy:8086
+    token: tn4fVNEKxn5RNzy-apO0LkXNon8nm1yCNqj97i3KA9j6GkmX-vvYISvqORHqwKdP5kyVnwFkNXxlVEpMOX89gA==
+
   mqtt:
-    hostname: mac-primergy:1883
-    url: tcp://${integration.mqtt.hostname}
+    url: tcp://mac-primergy:1883
     client-id: iot-app
     topics:
       - soil-moisture-sensor
       - temperature-sensor
-  elasticsearch:
-    endpoint: mac-primergy:9200
 
 logging:
   level:
     org.springframework.data.convert.CustomConversions: ERROR
-
-spring.influx

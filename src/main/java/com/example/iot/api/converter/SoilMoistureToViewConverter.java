@@ -11,10 +11,9 @@ public class SoilMoistureToViewConverter implements Converter<SoilMoisture, Soil
     @Override
     public SoilMoistureView convert(SoilMoisture source) {
         return new SoilMoistureView(
-                source.getId().toString(),
                 source.getSensor(),
-                source.getRaw(),
                 source.getPercent(),
+                source.getMillivolt(),
                 source.getTimestamp().toString());
     }
 }

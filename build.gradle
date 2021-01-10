@@ -15,8 +15,6 @@ configurations {
     }
 }
 
-ext['elasticsearch.version'] = '7.9.3'
-
 repositories {
     mavenCentral()
 }
@@ -25,18 +23,15 @@ dependencies {
     implementation(
             'org.springframework.boot:spring-boot-starter-web',
             'org.springframework.boot:spring-boot-starter-validation',
-            'org.springframework.boot:spring-boot-starter-data-elasticsearch',
             'org.springframework.integration:spring-integration-mqtt',
-            'io.springfox:springfox-swagger2:3.0.0',
-            'io.springfox:springfox-swagger-ui:3.0.0'
+            'com.influxdb:influxdb-client-java:1.14.0',
+            'io.springfox:springfox-boot-starter:3.0.0'
+
     )
     annotationProcessor 'org.springframework.boot:spring-boot-configuration-processor'
     testImplementation(
             'org.springframework.boot:spring-boot-starter-test',
-            'org.springframework.boot:spring-boot-starter-data-elasticsearch',
-            'org.elasticsearch.client:elasticsearch-rest-high-level-client:7.9.3',
-            'org.testcontainers:junit-jupiter:1.15.1',
-            'org.testcontainers:elasticsearch:1.15.1'
+            'org.testcontainers:junit-jupiter:1.15.1'
     )
 }
 

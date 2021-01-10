@@ -7,7 +7,6 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.context.annotation.Profile;
 import org.springframework.integration.annotation.IntegrationComponentScan;
 import org.springframework.integration.annotation.ServiceActivator;
 import org.springframework.integration.channel.DirectChannel;
@@ -22,13 +21,12 @@ import static java.util.Optional.ofNullable;
 
 @Configuration
 @IntegrationComponentScan
-@Profile("!test")
 public class MqttConfiguration {
-    private final MqttClient mqttClient;
+    private final MqttProperties properties;
     private final ApplicationEventPublisher publisher;
 
-    public MqttConfiguration(MqttClient mqttClient, ApplicationEventPublisher publisher) {
-        this.mqttClient = mqttClient;
+    public MqttConfiguration(MqttProperties properties, ApplicationEventPublisher publisher) {
+        this.properties = properties;
         this.publisher = publisher;
     }
 
@@ -40,7 +38,7 @@ public class MqttConfiguration {
     @Bean
     public MessageProducer inbound() {
         MqttPahoMessageDrivenChannelAdapter adapter = new MqttPahoMessageDrivenChannelAdapter(
-                mqttClient.getUrl(), mqttClient.getClientId(), mqttClient.getTopics().toArray(new String[0]));
+                properties.getUrl(), properties.getClientId(), properties.getTopics().toArray(new String[0]));
         adapter.setCompletionTimeout(5000);
         adapter.setConverter(new DefaultPahoMessageConverter());
         adapter.setQos(1);

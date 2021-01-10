@@ -3,41 +3,50 @@ package com.example.iot.domain.service;
 import com.example.SoilMoistureView;
 import com.example.iot.domain.event.SoilMoistureEvent;
 import com.example.iot.domain.model.SoilMoisture;
-import com.example.iot.domain.repository.SoilMoistureRepository;
+import com.example.iot.domain.model.SoilMoistureRawInflux;
+import com.influxdb.client.InfluxDBClient;
+import com.influxdb.client.domain.WritePrecision;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.core.convert.ConversionService;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageImpl;
-import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 import static java.util.Objects.requireNonNull;
 
 @Service
 public class MeasureService {
-    private final SoilMoistureRepository soilMoistureRepository;
+    private final InfluxDBClient influxDBClient;
     private final ConversionService conversionService;
 
-    public MeasureService(SoilMoistureRepository soilMoistureRepository, @Qualifier("mvcConversionService") ConversionService conversionService) {
-        this.soilMoistureRepository = soilMoistureRepository;
+    public MeasureService(InfluxDBClient influxDBClient, @Qualifier("mvcConversionService") ConversionService conversionService) {
+        this.influxDBClient = influxDBClient;
         this.conversionService = conversionService;
     }
 
-    public Page<SoilMoistureView> findAllPageable(Pageable pageable) {
-        Page<SoilMoisture> page = soilMoistureRepository.findAll(pageable);
+    public Set<SoilMoistureView> findLastMeasures() {
+        List<SoilMoistureRawInflux> rawSoilMoisture = influxDBClient.getQueryApi().query(
+                "from(bucket: \"sensors\")\n" +
+                        "  |> range(start: -24h)\n" +
+                        "  |> filter(fn: (r) => r[\"_measurement\"] == \"soil-moisture\")\n", SoilMoistureRawInflux.class);
 
-        List<SoilMoistureView> soilMoistureViews = page.stream()
+        return rawSoilMoisture.stream()
+                .map(raw -> conversionService.convert(raw, SoilMoisture.class))
                 .map(soilMoisture -> conversionService.convert(soilMoisture, SoilMoistureView.class))
-                .collect(Collectors.toList());
-
-        return new PageImpl<>(soilMoistureViews, page.getPageable(), page.getTotalElements());
+                .collect(Collectors.toSet());
     }
 
     public void addSoilMoisture(SoilMoistureEvent event) {
         SoilMoisture soilMoisture = requireNonNull(conversionService.convert(event, SoilMoisture.class));
-        soilMoistureRepository.save(soilMoisture);
+        save(soilMoisture);
+
+        conversionService.convert(soilMoisture, SoilMoistureView.class);
+    }
+
+    private void save(SoilMoisture soilMoisture) {
+        SoilMoistureRawInflux rawSoilMoisture = conversionService.convert(soilMoisture, SoilMoistureRawInflux.class);
+        influxDBClient.getWriteApi().writeMeasurement("sensors", "primergy", WritePrecision.MS, rawSoilMoisture);
     }
 }

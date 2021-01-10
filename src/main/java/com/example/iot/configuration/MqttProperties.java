@@ -7,12 +7,12 @@ import java.util.Set;
 
 @ConfigurationProperties("integration.mqtt")
 @ConstructorBinding
-public class MqttClient {
+public class MqttProperties {
     private final String url;
     private final String clientId;
     private final Set<String> topics;
 
-    public MqttClient(String url, String clientId, Set<String> topics) {
+    public MqttProperties(String url, String clientId, Set<String> topics) {
         this.url = url;
         this.clientId = clientId;
         this.topics = topics;
