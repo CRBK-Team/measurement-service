@@ -1,7 +1,7 @@
 package com.example.iot;
 
 import com.example.iot.api.SoilMoistureApi;
-import com.example.iot.domain.service.MeasureService;
+import com.example.iot.domain.service.SoilMoistureService;
 import com.example.iot.infrastructure.EventHandler;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
@@ -24,5 +24,5 @@ abstract class BaseTest {
     SoilMoistureApi soilMoistureApi;
 
     @Autowired
-    MeasureService measureService;
+    SoilMoistureService soilMoistureService;
 }

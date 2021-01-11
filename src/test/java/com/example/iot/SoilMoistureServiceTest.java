@@ -2,7 +2,7 @@ package com.example.iot;
 
 import com.example.iot.configuration.MqttConfiguration;
 import com.example.iot.domain.event.SoilMoistureEvent;
-import com.example.iot.domain.model.SoilMoistureRawInflux;
+import com.example.iot.domain.model.SoilMoisture;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -28,15 +28,15 @@ class SoilMoistureServiceTest extends BaseTest {
         SoilMoistureEvent event = MqttConfiguration.castEvent(message);
 
         // when
-        SoilMoistureRawInflux soilMoisture = requireNonNull(conversionService.convert(event, SoilMoistureRawInflux.class));
+        SoilMoisture soilMoisture = requireNonNull(conversionService.convert(event, SoilMoisture.class));
 
         // then
-        assertThat(soilMoisture.getPercent()).isEqualTo(0.52);
+        assertThat(soilMoisture.getPercent()).isEqualTo(52);
         assertThat(soilMoisture.getTimestamp()).isEqualTo(LocalDateTime.of(2020, 1, 1, 3, 0, 0));
     }
 
     private Message<?> prepareMessage() {
-        String payload = "{\"sensor\":\"hw-080\",\"raw\":\"676\",\"pct\":\"52\"}";
+        String payload = "{\"sensor\":\"hw-080\",\"pct\":\"52\",\"mVolt\":\"320\"}";
         MutableMessageHeaders headers = new MutableMessageHeaders(Map.of(
                 "mqtt_receivedRetained", false,
                 "mqtt_id", 0,

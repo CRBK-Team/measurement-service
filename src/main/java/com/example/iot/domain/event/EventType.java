@@ -3,8 +3,8 @@ package com.example.iot.domain.event;
 import java.util.stream.Stream;
 
 public enum EventType {
-    SOIL_MOISTURE_SENSOR("soil-moisture-sensor", SoilMoistureEvent.class),
-    TEMPERATURE_SENSOR("temperature-sensor", TemperatureEvent.class);
+    SOIL_MOISTURE_SENSOR("soil-moisture", SoilMoistureEvent.class),
+    TEMPERATURE_SENSOR("temperature", TemperatureEvent.class);
 
     String name;
     Class<?> clazz;

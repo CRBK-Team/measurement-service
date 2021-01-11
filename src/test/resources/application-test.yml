@@ -1,10 +1,13 @@
+spring:
+  data:
+    mongodb:
+      host:
+      port:
+
 integration:
   mqtt:
-    hostname: 127.0.0.1:1883
-    url: tcp://${integration.mqtt.hostname}
-    client-id: iot-app
+    url: tcp://127.0.0.1:1883
+    client-id: crbk-project
     topics:
-      - soil-moisture-sensor
-      - temperature-sensor
-  elasticsearch:
-    endpoint: 127.0.0.1:9200
+      - soil-moisture
+      - temperature

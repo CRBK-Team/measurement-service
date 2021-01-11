@@ -37,11 +37,11 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
                 "/configuration/security",
                 "/swagger-ui.html");
     }
-
-    @Autowired
-    public void configureGlobal(AuthenticationManagerBuilder auth) throws Exception {
-        auth.inMemoryAuthentication().withUser("admin").password("{noop}IoT2021!").roles("ADMIN");
-    }
+//
+//    @Autowired
+//    public void configureGlobal(AuthenticationManagerBuilder auth) throws Exception {
+//        auth.inMemoryAuthentication().withUser("admin").password("{noop}IoT2021!").roles("ADMIN");
+//    }
 
     @Bean
     public PasswordEncoder passwordEncoder() {
