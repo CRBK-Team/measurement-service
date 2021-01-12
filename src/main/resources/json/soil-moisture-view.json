@@ -10,7 +10,7 @@
     "milliVolt": {
       "type": "integer"
     },
-    "timestamp": {
+    "measuredAt": {
       "type": "string",
       "format": "datetime"
     }

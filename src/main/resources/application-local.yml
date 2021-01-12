@@ -3,15 +3,21 @@ spring:
     name: crbk-project
   data:
     mongodb:
-      host: mac-primergy
+      host: localhost
       port: 27017
       database: crbk-project
       username: admin
       password: password
       authentication-database: admin
+  security:
+    user:
+      name: admin
+      password: password
+      roles: ADMIN
 
+integration:
   mqtt:
-    url: tcp://mac-primergy:1883
+    url: tcp://localhost:1883
     client-id: local-instance
     topics:
       - soil-moisture

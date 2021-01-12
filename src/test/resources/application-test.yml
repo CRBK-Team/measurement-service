@@ -3,6 +3,12 @@ spring:
     mongodb:
       host:
       port:
+      database: test
+  security:
+    user:
+      name: test
+      password: test
+      roles: ADMIN
 
 integration:
   mqtt:
