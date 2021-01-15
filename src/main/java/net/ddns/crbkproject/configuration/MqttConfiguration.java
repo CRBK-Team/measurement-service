@@ -1,26 +1,23 @@
 package net.ddns.crbkproject.configuration;
 
-import net.ddns.crbkproject.domain.event.Event;
-import net.ddns.crbkproject.domain.event.EventType;
 import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
+import net.ddns.crbkproject.infrastructure.EventHandler;
 import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.Profile;
 import org.springframework.integration.annotation.IntegrationComponentScan;
 import org.springframework.integration.annotation.ServiceActivator;
 import org.springframework.integration.channel.DirectChannel;
 import org.springframework.integration.core.MessageProducer;
 import org.springframework.integration.mqtt.inbound.MqttPahoMessageDrivenChannelAdapter;
 import org.springframework.integration.mqtt.support.DefaultPahoMessageConverter;
-import org.springframework.messaging.Message;
 import org.springframework.messaging.MessageChannel;
 import org.springframework.messaging.MessageHandler;
 
-import static java.util.Optional.ofNullable;
-
 @Configuration
 @IntegrationComponentScan
+@Profile("!test")
 public class MqttConfiguration {
     private final MqttProperties properties;
     private final ApplicationEventPublisher publisher;
@@ -51,24 +48,11 @@ public class MqttConfiguration {
     public MessageHandler handler() {
         return message -> {
             try {
-                Object event = castEvent(message);
+                Object event = EventHandler.castEvent(message);
                 publisher.publishEvent(event);
             } catch (JsonProcessingException e) {
                 e.printStackTrace();
             }
         };
-    }
-
-    @SuppressWarnings("unchecked")
-    public static <T> T castEvent(Message<?> message) throws JsonProcessingException {
-        String topic = ofNullable(message.getHeaders().get("mqtt_receivedTopic"))
-                .map(Object::toString)
-                .orElseThrow(RuntimeException::new);
-
-        Class<?> clazz = EventType.of(topic).getClazz();
-
-        Event event = (Event) clazz.cast(new ObjectMapper().readValue(message.getPayload().toString(), clazz));
-        event.assignHeaders(message.getHeaders().getId(), message.getHeaders().getTimestamp());
-        return (T) event;
     }
 }

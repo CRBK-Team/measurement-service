@@ -1,12 +1,19 @@
 package net.ddns.crbkproject.infrastructure;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import net.ddns.crbkproject.domain.event.Event;
+import net.ddns.crbkproject.domain.event.EventType;
 import net.ddns.crbkproject.domain.event.SoilMoistureEvent;
 import net.ddns.crbkproject.domain.event.TemperatureEvent;
 import net.ddns.crbkproject.domain.service.SoilMoistureService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.context.event.EventListener;
+import org.springframework.messaging.Message;
 import org.springframework.stereotype.Component;
+
+import static java.util.Optional.ofNullable;
 
 @Component
 public class EventHandler {
@@ -26,5 +33,18 @@ public class EventHandler {
     @EventListener(TemperatureEvent.class)
     public void handleOtherMeasure(TemperatureEvent event) {
         log.info("Received temperature measure");
+    }
+
+    @SuppressWarnings("unchecked")
+    public static <T> T castEvent(Message<?> message) throws JsonProcessingException {
+        String topic = ofNullable(message.getHeaders().get("mqtt_receivedTopic"))
+                .map(Object::toString)
+                .orElseThrow(RuntimeException::new);
+
+        Class<?> clazz = EventType.of(topic).getClazz();
+
+        Event event = (Event) clazz.cast(new ObjectMapper().readValue(message.getPayload().toString(), clazz));
+        event.assignHeaders(message.getHeaders().getId(), message.getHeaders().getTimestamp());
+        return (T) event;
     }
 }
