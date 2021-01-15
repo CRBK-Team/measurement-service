@@ -6,24 +6,23 @@ pipeline {
     stages {
         stage('Build') {
             steps {
-                sh 'gradle build -x test'
+                sh './gradlew build -x test'
             }
         }
         stage('Test') {
             steps {
-                sh 'gradle test'
-                junit 'reports/**/*.xml'
+                sh './gradlew test'
             }
         }
         stage('Build Docker image') {
             steps {
-                sh 'gradle bootBuildImage'
+                sh './gradlew bootBuildImage'
             }
         }
         stage('Deploy') {
-            steps {
-                // for implementation
-            }
+           steps {
+                sh 'sudo docker service update crbk-iot_crbk-project'
+           }
         }
     }
 }

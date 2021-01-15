@@ -5,10 +5,10 @@ spring:
     mongodb:
       host: mac-primergy
       port: 27017
-      database:
+      database: crbk-project
       username:
       password:
-      authentication-database:
+      authentication-database: admin
   security:
     user:
       name:
