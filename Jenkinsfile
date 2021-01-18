@@ -21,7 +21,7 @@ pipeline {
         }
         stage('Deploy') {
            steps {
-                sh 'sudo docker service update crbk-iot_crbk-project'
+                sh 'docker service update crbk-iot_crbk-project'
            }
         }
     }

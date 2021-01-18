@@ -4,7 +4,6 @@ import net.ddns.crbkproject.SoilMoistureView;
 import net.ddns.crbkproject.domain.event.SoilMoistureEvent;
 import net.ddns.crbkproject.domain.model.SoilMoisture;
 import net.ddns.crbkproject.infrastructure.repository.SoilMoistureRepository;
-import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.core.convert.ConversionService;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
@@ -19,25 +18,25 @@ import static java.util.Objects.requireNonNull;
 @Service
 public class SoilMoistureService {
     private final SoilMoistureRepository soilMoistureRepository;
-    private final ConversionService conversionService;
+    private final ConversionService mvcConversionService;
 
-    public SoilMoistureService(SoilMoistureRepository soilMoistureRepository, @Qualifier("mvcConversionService") ConversionService conversionService) {
+    public SoilMoistureService(SoilMoistureRepository soilMoistureRepository, ConversionService mvcConversionService) {
         this.soilMoistureRepository = soilMoistureRepository;
-        this.conversionService = conversionService;
+        this.mvcConversionService = mvcConversionService;
     }
 
     public List<SoilMoistureView> findAllPageable(Pageable pageable) {
         Page<SoilMoisture> page = soilMoistureRepository.findAll(pageable);
 
         List<SoilMoistureView> soilMoistureViews = page.stream()
-                .map(soilMoisture -> conversionService.convert(soilMoisture, SoilMoistureView.class))
+                .map(soilMoisture -> mvcConversionService.convert(soilMoisture, SoilMoistureView.class))
                 .collect(Collectors.toList());
 
         return new PageImpl<>(soilMoistureViews, page.getPageable(), page.getTotalElements()).toList();
     }
 
     public void addSoilMoisture(SoilMoistureEvent event) {
-        SoilMoisture soilMoisture = requireNonNull(conversionService.convert(event, SoilMoisture.class));
+        SoilMoisture soilMoisture = requireNonNull(mvcConversionService.convert(event, SoilMoisture.class));
         soilMoistureRepository.save(soilMoisture);
     }
 }

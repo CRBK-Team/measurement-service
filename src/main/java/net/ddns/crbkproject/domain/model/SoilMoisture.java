@@ -6,8 +6,12 @@ import org.springframework.data.annotation.PersistenceConstructor;
 import org.springframework.data.annotation.TypeAlias;
 import org.springframework.data.mongodb.core.mapping.Document;
 
-import javax.validation.constraints.*;
+import javax.validation.constraints.Max;
+import javax.validation.constraints.Min;
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.PastOrPresent;
 import java.time.LocalDateTime;
+import java.util.Objects;
 
 @Document("soil-moisture")
 @TypeAlias("SoilMoisture")
@@ -30,7 +34,7 @@ public class SoilMoisture {
     @PastOrPresent
     private final LocalDateTime measuredAt;
 
-    public SoilMoisture(String sensor, int percent,  int millivolt, LocalDateTime measuredAt) {
+    public SoilMoisture(String sensor, int percent, int millivolt, LocalDateTime measuredAt) {
         this.id = new ObjectId();
         this.sensor = sensor;
         this.percent = percent;
@@ -65,5 +69,18 @@ public class SoilMoisture {
 
     public LocalDateTime getMeasuredAt() {
         return measuredAt;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        SoilMoisture that = (SoilMoisture) o;
+        return percent == that.percent && millivolt == that.millivolt && Objects.equals(id, that.id) && Objects.equals(sensor, that.sensor) && Objects.equals(measuredAt, that.measuredAt);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id, sensor, percent, millivolt, measuredAt);
     }
 }

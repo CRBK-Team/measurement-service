@@ -17,8 +17,7 @@ abstract class BaseTest {
     EventHandler eventHandler;
 
     @Autowired
-    @Qualifier("mvcConversionService")
-    ConversionService conversionService;
+    ConversionService mvcConversionService;
 
     @Autowired
     SoilMoistureApi soilMoistureApi;

@@ -23,14 +23,13 @@ class SoilMoistureServiceTest extends BaseTest {
 
     @Test
     @DisplayName("Converting casted event to domain object")
-    @Disabled
     void shouldConvertCastedEvent() throws JsonProcessingException {
         // given
         Message<?> message = prepareMessage();
 
         // when
         SoilMoistureEvent event = EventHandler.castEvent(message);
-        SoilMoisture soilMoisture = requireNonNull(conversionService.convert(event, SoilMoisture.class));
+        SoilMoisture soilMoisture = requireNonNull(mvcConversionService.convert(event, SoilMoisture.class));
 
         // then
         assertThat(soilMoisture.getPercent()).isEqualTo(52);
@@ -51,7 +50,7 @@ class SoilMoistureServiceTest extends BaseTest {
                 "id", UUID.fromString("eeee0741-191b-5af9-76b8-487d948c6881"),
                 "mqtt_receivedTopic", "soil-moisture",
                 "mqtt_receivedQos", 0,
-                "timestamp", 1577844000L));
+                "timestamp", 1577844000000L));
 
         return new GenericMessage<>(payload, headers);
     }
