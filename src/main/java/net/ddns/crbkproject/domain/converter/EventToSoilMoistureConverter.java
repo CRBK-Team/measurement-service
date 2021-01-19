@@ -7,7 +7,7 @@ import org.springframework.stereotype.Component;
 
 import java.time.Instant;
 import java.time.LocalDateTime;
-import java.time.ZoneId;
+import java.time.ZoneOffset;
 
 @Component
 public class EventToSoilMoistureConverter implements Converter<SoilMoistureEvent, SoilMoisture> {
@@ -18,6 +18,6 @@ public class EventToSoilMoistureConverter implements Converter<SoilMoistureEvent
                 source.getSensor(),
                 source.getPct(),
                 source.getmVolt(),
-                LocalDateTime.ofInstant(Instant.ofEpochMilli(source.getTimestamp()), ZoneId.systemDefault()));
+                LocalDateTime.ofInstant(Instant.ofEpochMilli(source.getTimestamp()), ZoneOffset.UTC));
     }
 }

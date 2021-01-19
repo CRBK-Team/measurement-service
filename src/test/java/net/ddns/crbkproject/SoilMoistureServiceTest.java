@@ -4,7 +4,6 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import net.ddns.crbkproject.domain.event.SoilMoistureEvent;
 import net.ddns.crbkproject.domain.model.SoilMoisture;
 import net.ddns.crbkproject.infrastructure.EventHandler;
-import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.integration.support.MutableMessageHeaders;
@@ -12,6 +11,8 @@ import org.springframework.messaging.Message;
 import org.springframework.messaging.support.GenericMessage;
 
 import java.time.LocalDateTime;
+import java.time.ZoneOffset;
+import java.time.ZonedDateTime;
 import java.util.Map;
 import java.util.UUID;
 
@@ -33,7 +34,8 @@ class SoilMoistureServiceTest extends BaseTest {
 
         // then
         assertThat(soilMoisture.getPercent()).isEqualTo(52);
-        assertThat(soilMoisture.getMeasuredAt()).isEqualTo(LocalDateTime.of(2020, 1, 1, 3, 0, 0));
+        assertThat(soilMoisture.getMeasuredAt())
+                .isEqualTo(LocalDateTime.of(2020, 1, 1, 2, 0, 0, 0));
     }
 
     @Test
