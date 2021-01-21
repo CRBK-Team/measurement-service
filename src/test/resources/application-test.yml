@@ -16,4 +16,4 @@ integration:
     client-id: crbk-project
     topics:
       - soil-moisture
-      - temperature
+      - weather

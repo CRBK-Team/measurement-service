@@ -5,8 +5,9 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import net.ddns.crbkproject.domain.event.Event;
 import net.ddns.crbkproject.domain.event.EventType;
 import net.ddns.crbkproject.domain.event.SoilMoistureEvent;
-import net.ddns.crbkproject.domain.event.TemperatureEvent;
+import net.ddns.crbkproject.domain.event.WeatherEvent;
 import net.ddns.crbkproject.domain.service.SoilMoistureService;
+import net.ddns.crbkproject.domain.service.WeatherService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.context.event.EventListener;
@@ -18,10 +19,12 @@ import static java.util.Optional.ofNullable;
 @Component
 public class EventHandler {
     private final SoilMoistureService soilMoistureService;
+    private final WeatherService weatherService;
     private static final Logger log = LoggerFactory.getLogger(EventHandler.class);
 
-    public EventHandler(SoilMoistureService soilMoistureService) {
+    public EventHandler(SoilMoistureService soilMoistureService, WeatherService weatherService) {
         this.soilMoistureService = soilMoistureService;
+        this.weatherService = weatherService;
     }
 
     @EventListener(SoilMoistureEvent.class)
@@ -30,9 +33,10 @@ public class EventHandler {
         log.info("Received soil moisture measure: {}%", event.getPct());
     }
 
-    @EventListener(TemperatureEvent.class)
-    public void handleOtherMeasure(TemperatureEvent event) {
-        log.info("Received temperature measure");
+    @EventListener(WeatherEvent.class)
+    public void handleWeatherMeasure(WeatherEvent event) {
+        weatherService.addWeather(event);
+        log.info("Received weather measure: {} C degrees, {} %, {} hPa ", event.getTemp(), event.getHum(), event.getPre());
     }
 
     @SuppressWarnings("unchecked")

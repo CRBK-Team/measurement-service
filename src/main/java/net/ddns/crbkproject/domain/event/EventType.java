@@ -8,7 +8,7 @@ import static net.ddns.crbkproject.domain.exception.ExceptionCode.NOT_SUPPORTED_
 
 public enum EventType {
     SOIL_MOISTURE_SENSOR("soil-moisture", SoilMoistureEvent.class),
-    TEMPERATURE_SENSOR("temperature", TemperatureEvent.class);
+    WEATHER_SENSOR("weather", WeatherEvent.class);
 
     String name;
     Class<?> clazz;

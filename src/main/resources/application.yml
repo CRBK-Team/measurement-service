@@ -15,10 +15,16 @@ spring:
       password:
       roles: ADMIN
 
+management:
+  endpoints:
+    web:
+      exposure:
+        include: info, health, configprops
+
 integration:
   mqtt:
     url: tcp://mac-primergy:1883
     client-id: instance
     topics:
       - soil-moisture
-      - temperature
+      - weather
