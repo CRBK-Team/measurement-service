@@ -12,7 +12,7 @@ spring:
   security:
     user:
       name: admin
-      password: password
+      password: {noop}password
       roles: ADMIN
 
 integration:
