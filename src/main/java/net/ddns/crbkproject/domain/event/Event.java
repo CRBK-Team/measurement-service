@@ -6,9 +6,10 @@ public abstract class Event {
     protected UUID id;
     protected Long timestamp;
 
-    public void assignHeaders(UUID id, Long timestamp) {
+    public Event assignHeaders(UUID id, Long timestamp) {
         this.id = id;
         this.timestamp = timestamp;
+        return this;
     }
 
     public UUID getId() {

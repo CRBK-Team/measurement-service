@@ -1,6 +1,7 @@
 package net.ddns.crbkproject.configuration;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
+import net.ddns.crbkproject.domain.event.Event;
 import net.ddns.crbkproject.infrastructure.EventHandler;
 import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.context.annotation.Bean;
@@ -14,6 +15,8 @@ import org.springframework.integration.mqtt.inbound.MqttPahoMessageDrivenChannel
 import org.springframework.integration.mqtt.support.DefaultPahoMessageConverter;
 import org.springframework.messaging.MessageChannel;
 import org.springframework.messaging.MessageHandler;
+
+import java.util.Set;
 
 @Configuration
 @IntegrationComponentScan
@@ -48,8 +51,8 @@ public class MqttConfiguration {
     public MessageHandler handler() {
         return message -> {
             try {
-                Object event = EventHandler.castEvent(message);
-                publisher.publishEvent(event);
+                Set<? extends Event> events = EventHandler.castEvents(message);
+                events.forEach(publisher::publishEvent);
             } catch (JsonProcessingException e) {
                 e.printStackTrace();
             }

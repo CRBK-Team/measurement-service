@@ -1,28 +1,39 @@
 package net.ddns.crbkproject.domain.event;
 
-import net.ddns.crbkproject.domain.exception.DomainException;
-
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Objects;
+import java.util.Set;
+import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
-import static net.ddns.crbkproject.domain.exception.ExceptionCode.NOT_SUPPORTED_TOPIC;
-
 public enum EventType {
-    SOIL_MOISTURE_SENSOR("soil-moisture", SoilMoistureEvent.class),
-    WEATHER_SENSOR("weather", WeatherEvent.class);
+    SOIL_MOISTURE("sm", SoilMoistureEvent.class),
+    TEMPERATURE("temp", TemperatureEvent.class);
 
     String name;
     Class<?> clazz;
+    Map<String, String> attributes;
 
     EventType(String name, Class<?> clazz) {
         this.name = name;
         this.clazz = clazz;
+        this.attributes = new HashMap<>();
     }
 
-    public static EventType of(String name) {
+    public static EventType of(Map.Entry<String, String> entry) {
         return Stream.of(values())
-                .filter(value -> value.getName().equalsIgnoreCase(name))
+                .filter(value -> value.getName().equalsIgnoreCase(entry.getKey()) || "dev".equalsIgnoreCase(entry.getKey()))
+                .map(eventType -> eventType.assignAttribute(entry))
                 .findAny()
-                .orElseThrow(() -> new DomainException(NOT_SUPPORTED_TOPIC, name));
+                .orElse(null);
+    }
+
+    public static Set<EventType> getEventTypes(Map<String, String> attributes) {
+        return attributes.entrySet().stream()
+                .map(EventType::of)
+                .filter(Objects::nonNull)
+                .collect(Collectors.toSet());
     }
 
     public String getName() {
@@ -31,5 +42,14 @@ public enum EventType {
 
     public Class<?> getClazz() {
         return clazz;
+    }
+
+    public Map<String, String> getAttributes() {
+        return attributes;
+    }
+
+    private EventType assignAttribute(Map.Entry<String, String> entry) {
+        this.attributes.put(entry.getKey(), entry.getValue());
+        return this;
     }
 }

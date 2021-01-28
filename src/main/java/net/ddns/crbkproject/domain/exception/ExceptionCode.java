@@ -7,7 +7,7 @@ import static org.springframework.http.HttpStatus.*;
 public enum ExceptionCode {
     INTERNAL_SERVER("CRBK-001", "Internal Server Exception", INTERNAL_SERVER_ERROR),
     INVALID_VALUE_OF_FIELD("CRBK-002", "%s", BAD_REQUEST),
-    NOT_SUPPORTED_TOPIC("CRBK-051", "Not supported message topic '%s'", INTERNAL_SERVER_ERROR);
+    NOT_SUPPORTED_MEASURE("CRBK-051", "Not supported measure '%s'", BAD_REQUEST);
 
     private final String code;
     private final String detailsPattern;

@@ -5,31 +5,31 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 
 import java.io.Serializable;
 
-public class SoilMoistureEvent extends Event implements Serializable {
+public class TemperatureEvent extends Event implements Serializable {
     private static final long serialVersionUID = 1L;
 
     @JsonProperty("dev")
     private String device;
 
-    @JsonProperty("sm")
-    private int sm;
+    @JsonProperty("temp")
+    private int temp;
 
-    private SoilMoistureEvent() {
+    private TemperatureEvent() {
     }
 
     @JsonCreator
-    public SoilMoistureEvent(
+    public TemperatureEvent(
             @JsonProperty("dev") String device,
-            @JsonProperty("sm") int sm) {
+            @JsonProperty("temp") int temp) {
         this.device = device;
-        this.sm = sm;
+        this.temp = temp;
     }
 
     public String getDevice() {
         return device;
     }
 
-    public int getSm() {
-        return sm;
+    public int getTemp() {
+        return temp;
     }
 }

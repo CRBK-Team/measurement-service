@@ -1,6 +1,7 @@
 package net.ddns.crbkproject;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
+import net.ddns.crbkproject.domain.event.Event;
 import net.ddns.crbkproject.domain.event.SoilMoistureEvent;
 import net.ddns.crbkproject.domain.model.SoilMoisture;
 import net.ddns.crbkproject.infrastructure.EventHandler;
@@ -14,6 +15,7 @@ import java.time.LocalDateTime;
 import java.time.ZoneOffset;
 import java.time.ZonedDateTime;
 import java.util.Map;
+import java.util.Set;
 import java.util.UUID;
 
 import static java.util.Objects.requireNonNull;
@@ -29,7 +31,11 @@ class SoilMoistureServiceTest extends BaseTest {
         Message<?> message = prepareMessage();
 
         // when
-        SoilMoistureEvent event = EventHandler.castEvent(message);
+        Set<Event> events = EventHandler.castEvents(message);
+        SoilMoistureEvent event = events.stream()
+                .filter(e -> e.getClass().getName().equalsIgnoreCase(SoilMoistureEvent.class.getName()))
+                .map(e -> (SoilMoistureEvent) e)
+                .findAny().get();
         SoilMoisture soilMoisture = requireNonNull(mvcConversionService.convert(event, SoilMoisture.class));
 
         // then
@@ -44,7 +50,7 @@ class SoilMoistureServiceTest extends BaseTest {
     }
 
     private Message<?> prepareMessage() {
-        String payload = "{\"sensor\":\"hw-080\",\"pct\":\"52\",\"mVolt\":\"320\"}";
+        String payload = "{\"dev\":\"hw-080\",\"sm\":\"52\",\"temp\":\"22\"}";
         MutableMessageHeaders headers = new MutableMessageHeaders(Map.of(
                 "mqtt_receivedRetained", false,
                 "mqtt_id", 0,

@@ -15,9 +15,9 @@ public class EventToSoilMoistureConverter implements Converter<SoilMoistureEvent
     @Override
     public SoilMoisture convert(SoilMoistureEvent source) {
         return new SoilMoisture(
-                source.getSensor(),
-                source.getPct(),
-                source.getmVolt(),
+                source.getDevice(),
+                source.getSm(),
+                0,
                 LocalDateTime.ofInstant(Instant.ofEpochMilli(source.getTimestamp()), ZoneOffset.UTC));
     }
 }

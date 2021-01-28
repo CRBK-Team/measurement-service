@@ -1,13 +1,15 @@
-version: '3.3'
+version: '3.8'
 services:
 
   mosquitto:
-    image: eclipse-mosquitto
+    image: cro/mqtt:latest
     ports:
-      - 21883:1883
-      - 29001:9001
+      - 1883:1883
+      - 9001:9001
     networks:
       - internal
+    environment:
+      - MOSQUITTO_PASSWORDFILE=${MOSQUITTO_PASSWORDFILE}
     volumes:
       - mosquitto-conf:/home/mac/Infrastructure/mosquitto/config
       - mosquitto-data:/home/mac/Infrastructure/mosquitto/data
