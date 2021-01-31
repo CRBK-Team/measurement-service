@@ -1,30 +1,30 @@
 spring:
   application:
-    name: crbk-project
+    name: measurement-service
   data:
     mongodb:
       host: mac-primergy
       port: 27017
       database: crbk-project
-      username:
+      username: admin
       password:
       authentication-database: admin
   security:
     user:
-      name:
+      name: admin
       password:
       roles: ADMIN
+  rabbitmq:
+    host: mac-primergy
+    port: 5672
+    username: admin
+    password:
+    measurement-exchange: measurement
+    measured-routing-key: measured
+    measured-queue: measured.queue
 
 management:
   endpoints:
     web:
       exposure:
         include: info, health, configprops
-
-integration:
-  mqtt:
-    url: tcp://mac-primergy:1883
-    client-id: instance
-    topics:
-      - soil-moisture
-      - weather

@@ -4,10 +4,9 @@ import net.ddns.crbkproject.domain.event.SoilMoistureEvent;
 import net.ddns.crbkproject.domain.model.SoilMoisture;
 import org.springframework.core.convert.converter.Converter;
 import org.springframework.stereotype.Component;
+import org.springframework.validation.annotation.Validated;
 
-import java.time.Instant;
-import java.time.LocalDateTime;
-import java.time.ZoneOffset;
+import javax.validation.Valid;
 
 @Component
 public class EventToSoilMoistureConverter implements Converter<SoilMoistureEvent, SoilMoisture> {
@@ -18,6 +17,6 @@ public class EventToSoilMoistureConverter implements Converter<SoilMoistureEvent
                 source.getDevice(),
                 source.getSm(),
                 0,
-                LocalDateTime.ofInstant(Instant.ofEpochMilli(source.getTimestamp()), ZoneOffset.UTC));
+                source.getTimestamp());
     }
 }

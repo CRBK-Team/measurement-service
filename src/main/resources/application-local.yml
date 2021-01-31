@@ -1,24 +1,21 @@
 spring:
   application:
-    name: crbk-project
+    name: measurement-service
   data:
     mongodb:
-      host: mac-primergy
+      host: localhost
       port: 27017
-      database: crbk-project
+      database: measurements
       username: admin
-      password: IoT2021!
+      password: password
       authentication-database: admin
   security:
     user:
       name: admin
-      password: "{noop}IoT2021!"
+      password: "{noop}password"
       roles: ADMIN
-
-integration:
-  mqtt:
-    url: tcp://mac-primergy:1883
-    client-id: local-instance
-    topics:
-      - soil-moisture
-      - temperature
+  rabbitmq:
+    host: localhost
+    port: 5432
+    username: admin
+    password: password

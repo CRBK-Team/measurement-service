@@ -3,15 +3,8 @@ package net.ddns.crbkproject.domain.event;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-import java.io.Serializable;
-
-public class SoilMoistureEvent extends Event implements Serializable {
-    private static final long serialVersionUID = 1L;
-
-    @JsonProperty("dev")
+public class SoilMoistureEvent extends Event {
     private String device;
-
-    @JsonProperty("sm")
     private int sm;
 
     private SoilMoistureEvent() {

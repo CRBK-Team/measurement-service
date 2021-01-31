@@ -1,22 +1,22 @@
 package net.ddns.crbkproject.domain.event;
 
+import java.time.LocalDateTime;
 import java.util.UUID;
 
 public abstract class Event {
-    protected UUID id;
-    protected Long timestamp;
+    protected final UUID id;
+    protected final LocalDateTime timestamp;
 
-    public Event assignHeaders(UUID id, Long timestamp) {
-        this.id = id;
-        this.timestamp = timestamp;
-        return this;
+    Event() {
+        this.id = UUID.randomUUID();
+        this.timestamp = LocalDateTime.now();
     }
 
     public UUID getId() {
         return id;
     }
 
-    public Long getTimestamp() {
+    public LocalDateTime getTimestamp() {
         return timestamp;
     }
 }

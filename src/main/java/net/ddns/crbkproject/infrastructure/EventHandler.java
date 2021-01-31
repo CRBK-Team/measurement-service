@@ -10,9 +10,7 @@ import net.ddns.crbkproject.domain.exception.ExceptionCode;
 import net.ddns.crbkproject.domain.service.SoilMoistureService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.boot.configurationprocessor.json.JSONObject;
 import org.springframework.context.event.EventListener;
-import org.springframework.messaging.Message;
 import org.springframework.stereotype.Component;
 
 import java.util.Map;
@@ -37,16 +35,15 @@ public class EventHandler {
     }
 
     @SuppressWarnings("unchecked")
-    public static <T> Set<T> castEvents(Message<?> message) throws JsonProcessingException {
+    public static <T> Set<T> castEvents(String payload) throws JsonProcessingException {
         ObjectMapper mapper = new ObjectMapper();
 
-        Map<String, String> attributes = mapper.readValue(message.getPayload().toString(), Map.class);
+        Map<String, String> attributes = mapper.readValue(payload, Map.class);
 
         Set<EventType> eventTypes = EventType.getEventTypes(attributes);
 
         return eventTypes.stream()
                 .map(eventType -> getEvent(eventType, mapper))
-                .map(event -> event.assignHeaders(message.getHeaders().getId(), message.getHeaders().getTimestamp()))
                 .map(event -> (T) event)
                 .collect(Collectors.toSet());
     }

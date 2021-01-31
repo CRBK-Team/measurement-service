@@ -13,7 +13,8 @@ public enum EventType {
 
     String name;
     Class<?> clazz;
-    Map<String, String> attributes;
+    //TODO: IT'S A CRITICAL BUG, NON STATIC VALUES TO STATIC CONTEXT
+    Map<String, Object> attributes;
 
     EventType(String name, Class<?> clazz) {
         this.name = name;
@@ -44,7 +45,7 @@ public enum EventType {
         return clazz;
     }
 
-    public Map<String, String> getAttributes() {
+    public Map<String, Object> getAttributes() {
         return attributes;
     }
 

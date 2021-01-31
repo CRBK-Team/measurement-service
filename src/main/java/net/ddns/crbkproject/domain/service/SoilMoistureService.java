@@ -10,6 +10,7 @@ import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
+import javax.validation.Valid;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -36,7 +37,7 @@ public class SoilMoistureService {
     }
 
     public void addSoilMoisture(SoilMoistureEvent event) {
-        SoilMoisture soilMoisture = requireNonNull(mvcConversionService.convert(event, SoilMoisture.class));
+        @Valid SoilMoisture soilMoisture = requireNonNull(mvcConversionService.convert(event, SoilMoisture.class));
         soilMoistureRepository.save(soilMoisture);
     }
 }

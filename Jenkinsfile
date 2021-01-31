@@ -4,7 +4,9 @@ pipeline {
             skipStagesAfterUnstable()
     }
     environment {
-        SERVICE_NAME = "crbk-project"
+        ENV_NAME = "dev"
+        PROJECT_STACK_NAME = "crbk-project"
+        SERVICE_NAME = "measurement-service"
     }
     stages {
         stage('Build') {
@@ -19,12 +21,12 @@ pipeline {
         }
         stage('Build Docker image') {
             steps {
-                sh 'docker build -t ${SERVICE_NAME}:latest -t ${SERVICE_NAME}:${BUILD_NUMBER} .'
+                sh 'docker build -t ${PROJECT_STACK_NAME}-${SERVICE_NAME}:latest -t ${PROJECT_STACK_NAME}-${SERVICE_NAME}:${BUILD_NUMBER} .'
             }
         }
         stage('Deploy') {
            steps {
-                sh 'docker service update crbk-iot_${SERVICE_NAME}'
+                sh 'docker service update ${ENV_NAME}-${PROJECT_STACK_NAME}_${SERVICE_NAME}'
            }
         }
     }
