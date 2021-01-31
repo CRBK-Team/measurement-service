@@ -21,33 +21,27 @@ public class SoilMoisture {
     private final ObjectId id;
 
     @NotBlank
-    private final String sensor;
+    private final String device;
 
     @Min(0)
     @Max(100)
     private final int percent;
 
-    @Min(0)
-    @Max(9999)
-    private final int millivolt;
-
     @PastOrPresent
     private final LocalDateTime measuredAt;
 
-    public SoilMoisture(String sensor, int percent, int millivolt, LocalDateTime measuredAt) {
+    public SoilMoisture(String device, int percent, LocalDateTime measuredAt) {
         this.id = new ObjectId();
-        this.sensor = sensor;
+        this.device = device;
         this.percent = percent;
-        this.millivolt = millivolt;
         this.measuredAt = measuredAt;
     }
 
     @PersistenceConstructor
-    public SoilMoisture(ObjectId id, String sensor, int percent, int millivolt, LocalDateTime measuredAt) {
+    public SoilMoisture(ObjectId id, String device, int percent, LocalDateTime measuredAt) {
         this.id = id;
-        this.sensor = sensor;
+        this.device = device;
         this.percent = percent;
-        this.millivolt = millivolt;
         this.measuredAt = measuredAt;
     }
 
@@ -55,16 +49,12 @@ public class SoilMoisture {
         return id;
     }
 
-    public String getSensor() {
-        return sensor;
+    public String getDevice() {
+        return device;
     }
 
     public int getPercent() {
         return percent;
-    }
-
-    public int getMillivolt() {
-        return millivolt;
     }
 
     public LocalDateTime getMeasuredAt() {
@@ -76,11 +66,11 @@ public class SoilMoisture {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         SoilMoisture that = (SoilMoisture) o;
-        return percent == that.percent && millivolt == that.millivolt && Objects.equals(id, that.id) && Objects.equals(sensor, that.sensor) && Objects.equals(measuredAt, that.measuredAt);
+        return percent == that.percent && Objects.equals(id, that.id) && Objects.equals(device, that.device) && Objects.equals(measuredAt, that.measuredAt);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, sensor, percent, millivolt, measuredAt);
+        return Objects.hash(id, device, percent, measuredAt);
     }
 }

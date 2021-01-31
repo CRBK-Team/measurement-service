@@ -1,7 +1,7 @@
 package net.ddns.crbkproject.domain.service;
 
 import net.ddns.crbkproject.SoilMoistureView;
-import net.ddns.crbkproject.domain.event.SoilMoistureEvent;
+import net.ddns.crbkproject.domain.model.Event;
 import net.ddns.crbkproject.domain.model.SoilMoisture;
 import net.ddns.crbkproject.infrastructure.repository.SoilMoistureRepository;
 import org.springframework.core.convert.ConversionService;
@@ -10,7 +10,6 @@ import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
-import javax.validation.Valid;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -36,8 +35,8 @@ public class SoilMoistureService {
         return new PageImpl<>(soilMoistureViews, page.getPageable(), page.getTotalElements()).toList();
     }
 
-    public void addSoilMoisture(SoilMoistureEvent event) {
-        @Valid SoilMoisture soilMoisture = requireNonNull(mvcConversionService.convert(event, SoilMoisture.class));
-        soilMoistureRepository.save(soilMoisture);
+    public SoilMoisture addSoilMoisture(Event event) {
+        SoilMoisture soilMoisture = requireNonNull(mvcConversionService.convert(event, SoilMoisture.class));
+        return soilMoistureRepository.save(soilMoisture);
     }
 }

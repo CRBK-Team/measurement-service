@@ -1,14 +1,15 @@
 package net.ddns.crbkproject.configuration;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
-import net.ddns.crbkproject.domain.event.Event;
+import net.ddns.crbkproject.domain.model.Event;
 import net.ddns.crbkproject.infrastructure.EventHandler;
-import org.springframework.amqp.core.*;
+import org.springframework.amqp.core.BindingBuilder;
+import org.springframework.amqp.core.Declarables;
+import org.springframework.amqp.core.DirectExchange;
+import org.springframework.amqp.core.Queue;
 import org.springframework.amqp.rabbit.annotation.RabbitListener;
 import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.messaging.Message;
 import org.springframework.messaging.handler.annotation.Payload;
 
 import java.util.Set;
@@ -35,9 +36,9 @@ public class AmqpConfiguration {
     @RabbitListener(queues = "${spring.rabbitmq.measured-queue}")
     public void handleMeasurement(@Payload String payload) {
         try {
-            Set<? extends Event> events = EventHandler.castEvents(payload);
+            Set<Event> events = EventHandler.castEvents(payload);
             events.forEach(publisher::publishEvent);
-        } catch (JsonProcessingException e) {
+        } catch (Exception e) {
             e.printStackTrace();
         }
     }
