@@ -1,6 +1,4 @@
 spring:
-  application:
-    name: measurement-service
   data:
     mongodb:
       host: localhost
@@ -9,11 +7,6 @@ spring:
       username: admin
       password: password
       authentication-database: admin
-  security:
-    user:
-      name: admin
-      password: "{noop}password"
-      roles: ADMIN
   rabbitmq:
     host: localhost
     port: 5432

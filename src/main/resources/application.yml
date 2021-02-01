@@ -3,19 +3,14 @@ spring:
     name: measurement-service
   data:
     mongodb:
-      host: mac-primergy
+      host: mongodb
       port: 27017
       database: crbk-project
       username: admin
       password:
       authentication-database: admin
-  security:
-    user:
-      name: admin
-      password:
-      roles: ADMIN
   rabbitmq:
-    host: mac-primergy
+    host: rabbitmq
     port: 5672
     username: admin
     password:

@@ -11,7 +11,6 @@ import springfox.documentation.builders.PathSelectors;
 import springfox.documentation.builders.RequestHandlerSelectors;
 import springfox.documentation.schema.AlternateTypeRule;
 import springfox.documentation.schema.AlternateTypeRuleConvention;
-import springfox.documentation.service.BasicAuth;
 import springfox.documentation.spi.DocumentationType;
 import springfox.documentation.spring.web.plugins.Docket;
 import springfox.documentation.swagger2.annotations.EnableSwagger2;
@@ -35,8 +34,7 @@ public class SwaggerConfiguration {
                 .build()
                 .directModelSubstitute(LocalTime.class, String.class)
                 .directModelSubstitute(LocalDate.class, String.class)
-                .directModelSubstitute(LocalDateTime.class, String.class)
-                .securitySchemes(List.of(new BasicAuth("basicAuth")));
+                .directModelSubstitute(LocalDateTime.class, String.class);
     }
 
     @Bean
@@ -57,10 +55,9 @@ public class SwaggerConfiguration {
 
     private Type pageableMixin() {
         return new AlternateTypeBuilder()
-                .fullyQualifiedClassName(
-                        String.format("%s.generated.%s",
-                                Pageable.class.getPackage().getName(),
-                                Pageable.class.getSimpleName()))
+                .fullyQualifiedClassName(String.format("%s.generated.%s",
+                        Pageable.class.getPackage().getName(),
+                        Pageable.class.getSimpleName()))
                 .build();
     }
 }

@@ -26,7 +26,6 @@ dependencies {
             'org.springframework.boot:spring-boot-starter-actuator',
             'org.springframework.boot:spring-boot-starter-data-mongodb',
             'org.springframework.boot:spring-boot-starter-amqp',
-            'org.springframework.boot:spring-boot-starter-security',
             'io.springfox:springfox-boot-starter:3.0.0'
     )
     annotationProcessor 'org.springframework.boot:spring-boot-configuration-processor'
