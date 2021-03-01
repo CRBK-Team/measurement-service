@@ -33,7 +33,7 @@ public class ExceptionHandling {
         return response(
                 request.getRequestURI(),
                 List.of(new ErrorDetails(exception)),
-                exception.getCode().getHttpStatus());
+                exception.code().httpStatus());
     }
 
     @ExceptionHandler({Exception.class})
@@ -42,7 +42,7 @@ public class ExceptionHandling {
 
         return response(
                 request.getRequestURI(),
-                List.of(new ErrorDetails(Objects.toString(INTERNAL_SERVER.getCode()), INTERNAL_SERVER.getDetailsPattern())),
+                List.of(new ErrorDetails(Objects.toString(INTERNAL_SERVER.code()), INTERNAL_SERVER.detailsPattern())),
                 INTERNAL_SERVER_ERROR);
     }
 
@@ -51,7 +51,7 @@ public class ExceptionHandling {
         LOG.error("MethodArgumentNotValidException", exception);
 
         List<ErrorDetails> errors = exception.getBindingResult().getFieldErrors().stream()
-                .map(fieldError -> new ErrorDetails(INVALID_VALUE_OF_FIELD.getCode(),
+                .map(fieldError -> new ErrorDetails(INVALID_VALUE_OF_FIELD.code(),
                         exception.getBindingResult().getFieldError().getField() + " " + exception.getBindingResult().getFieldError().getDefaultMessage()))
                 .collect(Collectors.toList());
 
@@ -60,7 +60,7 @@ public class ExceptionHandling {
 
     @ExceptionHandler({MethodArgumentTypeMismatchException.class})
     public ResponseEntity<ExceptionError> handleMethodArgumentTypeMismatchExceptions(HttpServletRequest request, MethodArgumentTypeMismatchException exception) {
-        ErrorDetails error = new ErrorDetails(INVALID_VALUE_OF_FIELD.getCode(), exception.getCause().getCause().getMessage());
+        ErrorDetails error = new ErrorDetails(INVALID_VALUE_OF_FIELD.code(), exception.getCause().getCause().getMessage());
 
         LOG.warn("{}: {}", error.getCode(), error.getMessage());
 

@@ -4,11 +4,11 @@ public class DomainException extends RuntimeException {
     private final ExceptionCode code;
 
     public DomainException(ExceptionCode code, Object... variables) {
-        super(String.format(code.getDetailsPattern(), variables));
+        super(String.format(code.detailsPattern(), variables));
         this.code = code;
     }
 
-    public ExceptionCode getCode() {
+    public ExceptionCode code() {
         return code;
     }
 }

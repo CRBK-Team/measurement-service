@@ -1,6 +1,6 @@
 package net.ddns.crbkproject.configuration;
 
-import net.ddns.crbkproject.domain.model.Event;
+import net.ddns.crbkproject.domain.model.common.Event;
 import net.ddns.crbkproject.infrastructure.EventHandler;
 import org.springframework.amqp.core.BindingBuilder;
 import org.springframework.amqp.core.Declarables;

@@ -2,9 +2,9 @@ package net.ddns.crbkproject.infrastructure;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import net.ddns.crbkproject.domain.model.Event;
-import net.ddns.crbkproject.domain.model.SoilMoisture;
-import net.ddns.crbkproject.domain.service.SoilMoistureService;
+import net.ddns.crbkproject.application.SoilMoistureService;
+import net.ddns.crbkproject.domain.model.common.Event;
+import net.ddns.crbkproject.domain.model.measurement.SoilMoisture;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.context.event.EventListener;
@@ -26,8 +26,8 @@ public class EventHandler {
 
     @EventListener(condition = "#event.type.name() eq 'SOIL_MOISTURE'")
     public void handleSoilMoistureMeasure(Event event) {
-        SoilMoisture soilMoisture = soilMoistureService.addSoilMoisture(event);
-        log.info("Received soil moisture measure: {}%", soilMoisture.getPercent());
+        SoilMoisture soilMoisture = soilMoistureService.add(event);
+        log.info("Received soil moisture measure: {}%", soilMoisture.percent());
     }
 
     @SuppressWarnings("unchecked")

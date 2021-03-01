@@ -1,9 +1,9 @@
-package net.ddns.crbkproject;
+package net.ddns.crbkproject.integration;
 
 import org.junit.jupiter.api.DisplayName;
 
 @DisplayName("Soil moisture tests")
-class SoilMoistureServiceTest extends BaseTest {
+class SoilMoistureServiceIntegrationTest extends BaseIntegrationTest {
 
 //    @Test
 //    @DisplayName("Converting casted event to domain object")

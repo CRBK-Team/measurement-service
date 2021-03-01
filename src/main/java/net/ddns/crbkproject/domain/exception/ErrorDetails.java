@@ -12,7 +12,7 @@ public class ErrorDetails {
     }
 
     public ErrorDetails(DomainException exception) {
-        this.code = Objects.toString(exception.getCode().getCode());
+        this.code = Objects.toString(exception.code().code());
         this.message = exception.getMessage();
     }
 
