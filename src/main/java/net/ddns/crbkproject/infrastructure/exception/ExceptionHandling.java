@@ -1,8 +1,5 @@
-package net.ddns.crbkproject.infrastructure;
+package net.ddns.crbkproject.infrastructure.exception;
 
-import net.ddns.crbkproject.domain.exception.DomainException;
-import net.ddns.crbkproject.domain.exception.ErrorDetails;
-import net.ddns.crbkproject.domain.exception.ExceptionError;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
@@ -17,13 +14,13 @@ import java.util.List;
 import java.util.Objects;
 import java.util.stream.Collectors;
 
-import static net.ddns.crbkproject.domain.exception.ExceptionCode.INTERNAL_SERVER;
-import static net.ddns.crbkproject.domain.exception.ExceptionCode.INVALID_VALUE_OF_FIELD;
+import static net.ddns.crbkproject.domain.model.common.ExceptionCode.INTERNAL_SERVER;
+import static net.ddns.crbkproject.domain.model.common.ExceptionCode.INVALID_VALUE_OF_FIELD;
 import static org.springframework.http.HttpStatus.BAD_REQUEST;
 import static org.springframework.http.HttpStatus.INTERNAL_SERVER_ERROR;
 
 @ControllerAdvice
-public class ExceptionHandling {
+class ExceptionHandling {
     private static final Logger LOG = LoggerFactory.getLogger(ExceptionHandling.class);
 
     @ExceptionHandler({DomainException.class})

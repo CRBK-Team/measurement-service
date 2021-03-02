@@ -5,7 +5,7 @@ import net.ddns.crbkproject.domain.model.measurement.SoilMoisture;
 
 import java.time.LocalDateTime;
 
-public class SoilMoistureResponse {
+class SoilMoistureResponse {
     private final String device;
     private final Integer percent;
     private final LocalDateTime measuredAt;

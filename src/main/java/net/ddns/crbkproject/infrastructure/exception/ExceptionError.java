@@ -1,9 +1,9 @@
-package net.ddns.crbkproject.domain.exception;
+package net.ddns.crbkproject.infrastructure.exception;
 
 import java.time.Instant;
 import java.util.List;
 
-public class ExceptionError {
+class ExceptionError {
     private final Instant timestamp;
     private final String path;
     private final List<ErrorDetails> errors;

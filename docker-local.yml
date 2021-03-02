@@ -1,0 +1,42 @@
+version: '3.8'
+services:
+
+  rabbitmq:
+    image: rabbitmq:3.8.11-management
+    deploy:
+      resources:
+        limits:
+          cpus: '0.4'
+          memory: 512M
+    environment:
+      RABBITMQ_DEFAULT_USER: admin
+      RABBITMQ_DEFAULT_PASS: password
+      TZ: Europe/Warsaw
+    ports:
+      - 5672:5672
+      - 15672:15672
+    networks:
+      - internal
+    volumes:
+      - rabbitmq-data:/var/lib/rabbitmq
+
+  mongodb:
+    image: mongo:4.4.3
+    ports:
+      - 27017:27017
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: admin
+      MONGO_INITDB_ROOT_PASSWORD: password
+      TZ: Europe/Warsaw
+    networks:
+      - internal
+    volumes:
+      - mongodb-data:/data/db
+
+networks:
+  internal:
+    driver: overlay
+
+volumes:
+  rabbitmq-data:
+  mongodb-data:

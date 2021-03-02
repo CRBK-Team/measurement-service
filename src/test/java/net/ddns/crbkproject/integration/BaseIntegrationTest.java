@@ -1,7 +1,7 @@
 package net.ddns.crbkproject.integration;
 
 import net.ddns.crbkproject.application.SoilMoistureService;
-import net.ddns.crbkproject.infrastructure.EventHandler;
+import net.ddns.crbkproject.infrastructure.MeasurementHandler;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.core.convert.ConversionService;
@@ -12,7 +12,7 @@ import org.springframework.test.context.ActiveProfiles;
 abstract class BaseIntegrationTest {
 
     @Autowired
-    EventHandler eventHandler;
+    MeasurementHandler measurementHandler;
 
     @Autowired
     ConversionService mvcConversionService;

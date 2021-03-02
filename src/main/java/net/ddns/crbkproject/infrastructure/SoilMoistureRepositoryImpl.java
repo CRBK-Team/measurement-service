@@ -8,7 +8,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Repository;
 
 @Repository
-public class SoilMoistureRepositoryImpl implements SoilMoistureRepository {
+class SoilMoistureRepositoryImpl implements SoilMoistureRepository {
     private final MongoSoilMoistureRepository mongoRepository;
 
     public SoilMoistureRepositoryImpl(MongoSoilMoistureRepository mongoRepository) {

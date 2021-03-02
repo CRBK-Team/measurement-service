@@ -1,4 +1,6 @@
-package net.ddns.crbkproject.domain.exception;
+package net.ddns.crbkproject.infrastructure.exception;
+
+import net.ddns.crbkproject.domain.model.common.ExceptionCode;
 
 public class DomainException extends RuntimeException {
     private final ExceptionCode code;

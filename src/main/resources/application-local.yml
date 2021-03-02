@@ -3,12 +3,12 @@ spring:
     mongodb:
       host: localhost
       port: 27017
-      database: measurements
+      database: crbk-project
       username: admin
       password: password
       authentication-database: admin
   rabbitmq:
     host: localhost
-    port: 5432
+    port: 5672
     username: admin
     password: password

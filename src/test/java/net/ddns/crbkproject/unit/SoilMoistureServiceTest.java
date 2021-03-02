@@ -1,8 +1,8 @@
 package net.ddns.crbkproject.unit;
 
-import net.ddns.crbkproject.domain.exception.DomainException;
-import net.ddns.crbkproject.domain.model.common.Event;
-import net.ddns.crbkproject.domain.model.common.EventType;
+import net.ddns.crbkproject.infrastructure.exception.DomainException;
+import net.ddns.crbkproject.domain.model.common.Measurement;
+import net.ddns.crbkproject.domain.model.common.MeasurementType;
 import net.ddns.crbkproject.domain.model.measurement.SoilMoisture;
 import org.junit.jupiter.api.Test;
 import org.springframework.core.convert.ConversionFailedException;
@@ -20,10 +20,10 @@ class SoilMoistureServiceTest extends BaseUnitTest {
     @Test
     void shouldFindAllPageable() {
         // given
-        Event event = Event.of(EventType.SOIL_MOISTURE);
-        event.assignAttribute(Map.entry("dev", "test"));
-        event.assignAttribute(Map.entry("sm", 78));
-        soilMoistureService.add(event);
+        Measurement measurement = Measurement.of(MeasurementType.SOIL_MOISTURE);
+        measurement.assignAttribute(Map.entry("dev", "test"));
+        measurement.assignAttribute(Map.entry("sm", 78));
+        soilMoistureService.add(measurement);
 
         // when
         List<SoilMoisture> mongoSoilMoistureList = soilMoistureService.findAllPageable(PageRequest.of(0, 10));
@@ -35,13 +35,13 @@ class SoilMoistureServiceTest extends BaseUnitTest {
     @Test
     void shouldThrowWhenFindAllPageable() {
         // given
-        Event event = Event.of(EventType.SOIL_MOISTURE);
-        event.assignAttribute(Map.entry("dev", "test"));
-        event.assignAttribute(Map.entry("sm", 152));
+        Measurement measurement = Measurement.of(MeasurementType.SOIL_MOISTURE);
+        measurement.assignAttribute(Map.entry("dev", "test"));
+        measurement.assignAttribute(Map.entry("sm", 152));
 
         // when
         DomainException exception = (DomainException) catchThrowableOfType(
-                () -> soilMoistureService.add(event), ConversionFailedException.class).getCause();
+                () -> soilMoistureService.add(measurement), ConversionFailedException.class).getCause();
 
         // then
         assertThat(exception.code().httpStatus()).isEqualTo(HttpStatus.BAD_REQUEST);

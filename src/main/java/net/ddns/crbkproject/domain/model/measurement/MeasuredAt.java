@@ -1,7 +1,7 @@
 package net.ddns.crbkproject.domain.model.measurement;
 
-import net.ddns.crbkproject.domain.exception.DomainException;
-import net.ddns.crbkproject.domain.exception.ExceptionCode;
+import net.ddns.crbkproject.infrastructure.exception.DomainException;
+import net.ddns.crbkproject.domain.model.common.ExceptionCode;
 
 import java.time.LocalDateTime;
 import java.util.Objects;

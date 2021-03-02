@@ -1,4 +1,4 @@
-package net.ddns.crbkproject.domain.exception;
+package net.ddns.crbkproject.domain.model.common;
 
 import org.springframework.http.HttpStatus;
 

@@ -1,8 +1,8 @@
-package net.ddns.crbkproject.domain.exception;
+package net.ddns.crbkproject.infrastructure.exception;
 
 import java.util.Objects;
 
-public class ErrorDetails {
+class ErrorDetails {
     private final String code;
     private final String message;
 

@@ -1,18 +1,18 @@
-package net.ddns.crbkproject.domain.converter;
+package net.ddns.crbkproject.infrastructure.converter;
 
-import net.ddns.crbkproject.domain.exception.DomainException;
-import net.ddns.crbkproject.domain.model.common.Event;
+import net.ddns.crbkproject.infrastructure.exception.DomainException;
+import net.ddns.crbkproject.domain.model.common.Measurement;
 import net.ddns.crbkproject.infrastructure.mongo.model.MongoSoilMoisture;
 import org.springframework.core.convert.converter.Converter;
 import org.springframework.stereotype.Component;
 
-import static net.ddns.crbkproject.domain.exception.ExceptionCode.NOT_SUPPORTED_MEASURE;
+import static net.ddns.crbkproject.domain.model.common.ExceptionCode.NOT_SUPPORTED_MEASURE;
 
 @Component
-public class EventConverter implements Converter<Event, MongoSoilMoisture> {
+public class EventToMongoSoilMoistureConverter implements Converter<Measurement, MongoSoilMoisture> {
 
     @Override
-    public MongoSoilMoisture convert(Event source) {
+    public MongoSoilMoisture convert(Measurement source) {
         try {
             return MongoSoilMoisture.of(
                     source.attributes().get("dev").toString(),

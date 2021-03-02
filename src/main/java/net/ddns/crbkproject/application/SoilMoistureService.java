@@ -1,7 +1,7 @@
 package net.ddns.crbkproject.application;
 
 import static java.util.Objects.requireNonNull;
-import net.ddns.crbkproject.domain.model.common.Event;
+import net.ddns.crbkproject.domain.model.common.Measurement;
 import net.ddns.crbkproject.domain.model.measurement.SoilMoisture;
 import net.ddns.crbkproject.domain.repository.SoilMoistureRepository;
 import net.ddns.crbkproject.infrastructure.mongo.model.MongoSoilMoisture;
@@ -34,8 +34,8 @@ public class SoilMoistureService {
         return new PageImpl<>(mongoSoilMoistureList, page.getPageable(), page.getTotalElements()).toList();
     }
 
-    public SoilMoisture add(Event event) {
-        MongoSoilMoisture mongoSoilMoisture = requireNonNull(conversionService.convert(event, MongoSoilMoisture.class));
+    public SoilMoisture add(Measurement measurement) {
+        MongoSoilMoisture mongoSoilMoisture = requireNonNull(conversionService.convert(measurement, MongoSoilMoisture.class));
         mongoSoilMoisture = soilMoistureRepository.save(mongoSoilMoisture);
 
         return requireNonNull(conversionService.convert(mongoSoilMoisture, SoilMoisture.class));

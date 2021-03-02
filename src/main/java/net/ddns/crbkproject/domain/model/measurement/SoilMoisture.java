@@ -1,7 +1,5 @@
 package net.ddns.crbkproject.domain.model.measurement;
 
-import net.ddns.crbkproject.domain.model.common.Device;
-
 import java.util.Objects;
 
 public class SoilMoisture {

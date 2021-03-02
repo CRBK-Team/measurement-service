@@ -1,7 +1,7 @@
 package net.ddns.crbkproject.unit;
 
-import net.ddns.crbkproject.domain.converter.EventConverter;
-import net.ddns.crbkproject.domain.converter.MongoSoilMoistureConverter;
+import net.ddns.crbkproject.infrastructure.converter.EventToMongoSoilMoistureConverter;
+import net.ddns.crbkproject.domain.converter.MongoToSoilMoistureConverter;
 import net.ddns.crbkproject.domain.repository.SoilMoistureRepository;
 import org.springframework.boot.convert.ApplicationConversionService;
 import org.springframework.core.convert.converter.Converter;
@@ -24,7 +24,7 @@ public class UnitTestConfiguration {
 
     private static Set<Converter<?, ?>> getConverters() {
         return Set.of(
-                new EventConverter(),
-                new MongoSoilMoistureConverter());
+                new EventToMongoSoilMoistureConverter(),
+                new MongoToSoilMoistureConverter());
     }
 }

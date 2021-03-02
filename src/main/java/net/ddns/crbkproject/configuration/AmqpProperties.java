@@ -5,7 +5,7 @@ import org.springframework.boot.context.properties.ConstructorBinding;
 
 @ConstructorBinding
 @ConfigurationProperties(prefix = "spring.rabbitmq")
-public class AmqpProperties {
+class AmqpProperties {
     private final String measurementExchange;
     private final String measuredRoutingKey;
     private final String measuredQueue;
