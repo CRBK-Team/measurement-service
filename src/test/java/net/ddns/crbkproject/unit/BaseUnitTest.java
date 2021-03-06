@@ -10,5 +10,5 @@ import static net.ddns.crbkproject.unit.UnitTestConfiguration.soilMoistureReposi
 public abstract class BaseUnitTest {
     protected ConversionService conversionService = conversionService();
     protected SoilMoistureRepository soilMoistureRepository = soilMoistureRepository();
-    protected SoilMoistureService soilMoistureService = new SoilMoistureService(soilMoistureRepository, conversionService);
+    protected SoilMoistureService soilMoistureService = new SoilMoistureService(soilMoistureRepository, null, conversionService);
 }

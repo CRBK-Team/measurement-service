@@ -29,8 +29,8 @@ public class MeasurementHandler {
         this.objectMapper = objectMapper;
     }
 
-    @RabbitListener(queues = "${spring.rabbitmq.measured-queue}")
-    void handleMeasurement(@Payload String payload) {
+    @RabbitListener(id= "measurement", queues = "${spring.rabbitmq.measured-queue}")
+    public void handleMeasurement(@Payload String payload) {
         try {
             Set<Measurement> measurementSet = castMeasurement(payload);
             measurementSet.forEach(publisher::publishEvent);
@@ -43,6 +43,12 @@ public class MeasurementHandler {
     public void handleSoilMoistureMeasure(Measurement measurement) {
         SoilMoisture soilMoisture = soilMoistureService.add(measurement);
         LOG.info("Received soil moisture measure: {}%", soilMoisture.percent().value());
+    }
+
+    @EventListener(condition = "#measurement.type.name() eq 'TEST_MEASURE'")
+    public void handleTestMeasure(Measurement measurement) {
+        soilMoistureService.addTest(measurement);
+        LOG.info("Received test measure");
     }
 
     @SuppressWarnings("unchecked")

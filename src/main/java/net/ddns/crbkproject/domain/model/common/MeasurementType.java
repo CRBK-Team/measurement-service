@@ -6,7 +6,8 @@ import java.util.stream.Stream;
 
 public enum MeasurementType {
     SOIL_MOISTURE(Set.of("dev", "sm")),
-    TEMPERATURE(Set.of("dev", "temp"));
+    TEMPERATURE(Set.of("dev", "temp")),
+    TEST_MEASURE(Set.of("H", "V"));
 
     Set<String> properties;
 

@@ -9,14 +9,14 @@ import org.springframework.test.context.ActiveProfiles;
 
 @SpringBootTest
 @ActiveProfiles("test")
-abstract class BaseIntegrationTest {
+public abstract class BaseIntegrationTest {
 
     @Autowired
-    MeasurementHandler measurementHandler;
+    protected MeasurementHandler measurementHandler;
 
     @Autowired
-    ConversionService mvcConversionService;
+    protected ConversionService mvcConversionService;
 
     @Autowired
-    SoilMoistureService soilMoistureService;
+    protected SoilMoistureService soilMoistureService;
 }

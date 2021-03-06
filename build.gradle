@@ -31,6 +31,7 @@ dependencies {
     testImplementation(
             'org.springframework.boot:spring-boot-starter-test',
             'org.springframework.amqp:spring-rabbit-test',
+            'org.awaitility:awaitility:4.0.3',
             'de.flapdoodle.embed:de.flapdoodle.embed.mongo'
     )
 }
