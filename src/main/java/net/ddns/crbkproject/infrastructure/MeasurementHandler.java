@@ -12,6 +12,7 @@ import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.context.event.EventListener;
 import org.springframework.messaging.handler.annotation.Payload;
 import org.springframework.stereotype.Component;
+import reactor.core.publisher.Mono;
 
 import java.util.Map;
 import java.util.Set;
@@ -29,7 +30,7 @@ public class MeasurementHandler {
         this.objectMapper = objectMapper;
     }
 
-    @RabbitListener(id= "measurement", queues = "${spring.rabbitmq.measured-queue}")
+    @RabbitListener(id = "measurement", queues = "${spring.rabbitmq.measured-queue}")
     public void handleMeasurement(@Payload String payload) {
         try {
             Set<Measurement> measurementSet = castMeasurement(payload);
@@ -41,14 +42,8 @@ public class MeasurementHandler {
 
     @EventListener(condition = "#measurement.type.name() eq 'SOIL_MOISTURE'")
     public void handleSoilMoistureMeasure(Measurement measurement) {
-        SoilMoisture soilMoisture = soilMoistureService.add(measurement);
-        LOG.info("Received soil moisture measure: {}%", soilMoisture.percent().value());
-    }
-
-    @EventListener(condition = "#measurement.type.name() eq 'TEST_MEASURE'")
-    public void handleTestMeasure(Measurement measurement) {
-        soilMoistureService.addTest(measurement);
-        LOG.info("Received test measure");
+        Mono<SoilMoisture> soilMoisture = soilMoistureService.add(measurement);
+        soilMoisture.subscribe(sm -> LOG.info("Received soil moisture measure: {}%", sm.percent().value()));
     }
 
     @SuppressWarnings("unchecked")

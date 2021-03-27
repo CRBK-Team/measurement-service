@@ -17,7 +17,7 @@ import java.nio.charset.StandardCharsets;
 @RestController
 @RequestMapping("/v1/measurements")
 @Profile("test")
-public class MeasurementTestApi {
+class MeasurementTestApi {
     private final ObjectMapper objectMapper;
     private final RabbitTemplate rabbitTemplate;
 

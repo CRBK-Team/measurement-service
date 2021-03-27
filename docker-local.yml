@@ -2,7 +2,7 @@ version: '3.8'
 services:
 
   rabbitmq:
-    image: rabbitmq:3.8.11-management
+    image: rabbitmq:3.8.14-management
     deploy:
       resources:
         limits:
@@ -21,7 +21,7 @@ services:
       - rabbitmq-data:/var/lib/rabbitmq
 
   mongodb:
-    image: mongo:4.4.3
+    image: mongo:4.4.4
     ports:
       - 27017:27017
     environment:

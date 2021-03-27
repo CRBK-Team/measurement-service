@@ -1,5 +1,5 @@
 plugins {
-    id 'org.springframework.boot' version '2.4.3'
+    id 'org.springframework.boot' version '2.4.4'
     id 'io.spring.dependency-management' version '1.0.11.RELEASE'
     id 'java'
 }
@@ -20,18 +20,18 @@ repositories {
 
 dependencies {
     implementation(
-            'org.springframework.boot:spring-boot-starter-web',
+            'org.springframework.boot:spring-boot-starter-webflux',
             'org.springframework.boot:spring-boot-starter-validation',
             'org.springframework.boot:spring-boot-starter-actuator',
-            'org.springframework.boot:spring-boot-starter-data-mongodb',
             'org.springframework.boot:spring-boot-starter-amqp',
-            'org.springdoc:springdoc-openapi-ui:1.5.4'
+            'org.springframework.boot:spring-boot-starter-data-mongodb-reactive',
+            'org.springdoc:springdoc-openapi-webflux-ui:1.5.6'
     )
     annotationProcessor 'org.springframework.boot:spring-boot-configuration-processor'
     testImplementation(
             'org.springframework.boot:spring-boot-starter-test',
             'org.springframework.amqp:spring-rabbit-test',
-            'org.awaitility:awaitility:4.0.3',
+            'io.projectreactor:reactor-test',
             'de.flapdoodle.embed:de.flapdoodle.embed.mongo'
     )
 }

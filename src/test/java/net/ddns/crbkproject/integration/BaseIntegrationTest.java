@@ -15,7 +15,7 @@ public abstract class BaseIntegrationTest {
     protected MeasurementHandler measurementHandler;
 
     @Autowired
-    protected ConversionService mvcConversionService;
+    protected ConversionService conversionService;
 
     @Autowired
     protected SoilMoistureService soilMoistureService;

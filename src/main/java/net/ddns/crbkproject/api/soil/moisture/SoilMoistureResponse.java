@@ -1,4 +1,4 @@
-package net.ddns.crbkproject.api;
+package net.ddns.crbkproject.api.soil.moisture;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import net.ddns.crbkproject.domain.model.measurement.SoilMoisture;

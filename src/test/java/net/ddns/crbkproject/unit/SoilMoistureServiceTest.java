@@ -1,17 +1,19 @@
 package net.ddns.crbkproject.unit;
 
-import net.ddns.crbkproject.infrastructure.exception.DomainException;
 import net.ddns.crbkproject.domain.model.common.Measurement;
 import net.ddns.crbkproject.domain.model.common.MeasurementType;
 import net.ddns.crbkproject.domain.model.measurement.SoilMoisture;
+import net.ddns.crbkproject.infrastructure.exception.DomainException;
 import org.junit.jupiter.api.Test;
 import org.springframework.core.convert.ConversionFailedException;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.http.HttpStatus;
+import reactor.core.publisher.Mono;
 
 import java.util.List;
 import java.util.Map;
 
+import static java.util.Objects.requireNonNull;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.catchThrowableOfType;
 
@@ -26,10 +28,10 @@ class SoilMoistureServiceTest extends BaseUnitTest {
         soilMoistureService.add(measurement);
 
         // when
-        List<SoilMoisture> mongoSoilMoistureList = soilMoistureService.findAllPageable(PageRequest.of(0, 10));
+        List<SoilMoisture> soilMoisture = requireNonNull(soilMoistureService.findAllPageable(PageRequest.of(0, 10)).block()).getContent();
 
         // then
-        assertThat(mongoSoilMoistureList).hasSize(1);
+        assertThat(soilMoisture).hasSize(1);
     }
 
     @Test
@@ -40,8 +42,9 @@ class SoilMoistureServiceTest extends BaseUnitTest {
         measurement.assignAttribute(Map.entry("sm", 152));
 
         // when
+        Mono<SoilMoisture> soilMoistureMono = soilMoistureService.add(measurement);
         DomainException exception = (DomainException) catchThrowableOfType(
-                () -> soilMoistureService.add(measurement), ConversionFailedException.class).getCause();
+                soilMoistureMono::block, ConversionFailedException.class).getCause();
 
         // then
         assertThat(exception.code().httpStatus()).isEqualTo(HttpStatus.BAD_REQUEST);

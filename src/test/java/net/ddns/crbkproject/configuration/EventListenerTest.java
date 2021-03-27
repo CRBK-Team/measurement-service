@@ -48,7 +48,7 @@ class EventListenerTest {
     @Test
     void testSendAndReceive() {
         // given
-        String message = "{\n \"dev\":\"test-dev\",\n \"sm\":50 \n}";
+        String message = "{\n \"dev\":\"test-device\",\n \"sm\":50 \n}";
 
         // when
         this.template.convertSendAndReceive(measuredQueue, message);
